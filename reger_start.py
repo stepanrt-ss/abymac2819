@@ -230,6 +230,9 @@ def start_registrarion(num, user_n, m):
         options = webdriver.ChromeOptions()
         ua = ua_generator.generate(device='desktop', browser='chrome')
         prefs = {"profile.default_content_setting_values.notifications": 2}
+        geo = {"profile.default_content_setting_values.geolocation": 2}
+        options.add_experimental_option("prefs", prefs)
+        options.add_experimental_option("prefs", geo)
         options.add_argument(f'user-agent={ua}')
         options.add_argument("--ignore-certificate-errors")
         options.add_argument("--allow-running-insecure-content")
@@ -239,8 +242,6 @@ def start_registrarion(num, user_n, m):
         options.add_argument("--disable-save-password-bubble")
         options.add_argument("--disable-translate")
         options.add_argument("--disable-offer-upload-credit-cards")
-        print(ua)
-        options.add_experimental_option("prefs", prefs)
         options.page_load_strategy = 'eager'
 
         # >>> Добавление прокси в браузер
@@ -367,7 +368,7 @@ def start_registrarion(num, user_n, m):
 
     time.sleep(15)
 
-    click_func(driver, xpath_entrance, 10)
+    click_func(driver, xpath_entrance, 120)
 
     # >>> Проверка наличия капчи на сайте
     html_check_valid = driver.page_source
