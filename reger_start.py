@@ -248,12 +248,12 @@ def start_registrarion(num, user_n, m):
         if use_txt_proxy == 'True':
             PROXY = f'{proxy_host}:{proxy_port}'
             options.add_argument('--proxy-server=%s' % PROXY)
-            options.add_extension('proxt_auto_auth.crx')
+            options.add_extension(f'{path_to_dir}/proxt_auto_auth.crx')
 
         if use_mobile_proxy == 'True':
             PROXY = f'{proxy_host}:{proxy_port}'
             options.add_argument('--proxy-server=%s' % PROXY)
-            options.add_extension('proxt_auto_auth.crx')
+            options.add_extension(f'{path_to_dir}/proxt_auto_auth.crx')
 
         driver = webdriver.Chrome(options=options)
         return driver
