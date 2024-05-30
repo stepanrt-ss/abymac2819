@@ -86,7 +86,7 @@ class auth(QtWidgets.QMainWindow, ui_files.authUI.Ui_MainWindow):
                                     self.open_choise_ui.show()
                                     self.hide()
                                     to_json = {'login': f'{login}', 'password': f'{password}'}
-                                    with open('mainData/auth_data.json', 'w', encoding='utf-8') as f:
+                                    with open(f'{path_to_dir}/mainData/auth_data.json', 'w', encoding='utf-8') as f:
                                         json.dump(to_json, f)
                 if data['user'] == login:
                     print("1")
