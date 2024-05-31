@@ -20,7 +20,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from faker import Faker
 from concurrent.futures import ThreadPoolExecutor
 
-import get_paths_function_reg
+
+import stepLabLib
 
 attempts_for_response = 0
 found_numbers = 0
@@ -28,101 +29,101 @@ sucsesful = 0
 invalid_account = 0
 mails_for_regestration = []
 number_list = []
+path_to_dir = os.path.dirname(sys.executable)
+
 botEx = telebot.TeleBot('6516240750:AAHHSC0BlT4xloCif5DP-45NoHBVbQ9Ogtk')
 bot2 = telebot.TeleBot('7076742172:AAHXae2zRAvlUrin_yo4vrpD35DESjwJyOU')
 
-path_to_dir = os.path.dirname(sys.executable)
-
 # >>> Ввод имени (ФОРМА РЕГИСТРИАЦИИ)
-xpath_entry_FirstName = get_paths_function_reg.get_path('xpath_entry_FirstName')
+xpath_entry_FirstName = stepLabLib.get_path('xpath_entry_FirstName', 'AUTO_REG_PATHS')
 
 # >>> Ввод фамилии (ФОРМА РЕГИСТРАЦИИ)
-xpath_entry_SecondName = get_paths_function_reg.get_path('xpath_entry_SecondName')
+xpath_entry_SecondName = stepLabLib.get_path('xpath_entry_SecondName', 'AUTO_REG_PATHS')
 
 # >>> Ввод дня рождения (ФОРМА РЕГИСТРАЦИИ)
-xpath_entry_birthDay = get_paths_function_reg.get_path('xpath_entry_birthDay')
+xpath_entry_birthDay = stepLabLib.get_path('xpath_entry_birthDay', 'AUTO_REG_PATHS')
 
 # >>> Ввод паролья (ФОРМА РЕГИСТРАЦИИ)
-xpath_entry_password = get_paths_function_reg.get_path('xpath_entry_password')
+xpath_entry_password = stepLabLib.get_path('xpath_entry_password', 'AUTO_REG_PATHS')
 
 # >>> Ввод подтверждения пароль (ФОРМА РЕГИСТРАЦИИ)
-xpath_entry_passwordTwo = get_paths_function_reg.get_path('xpath_entry_passwordTwo')
+xpath_entry_passwordTwo = stepLabLib.get_path('xpath_entry_passwordTwo', 'AUTO_REG_PATHS')
 
 # >>> Ввод почты (ФОРМА РЕГИСТРАЦИИ)
-xpath_entry_Email = get_paths_function_reg.get_path('xpath_entry_Email')
+xpath_entry_Email = stepLabLib.get_path('xpath_entry_Email', 'AUTO_REG_PATHS')
 
 # >>> Подтвердить данные для регистрации (ФОРМА РЕГИСТРАЦИИ)
-xpath_accpet_registration = get_paths_function_reg.get_path('xpath_accpet_registration')
+xpath_accpet_registration = stepLabLib.get_path('xpath_accpet_registration', 'AUTO_REG_PATHS')
 
 # >>> Переход на сайт после регистрации (ФОРМА РЕГИСТРАЦИИ)
-xpath_btn_next = get_paths_function_reg.get_path('xpath_btn_next')
+xpath_btn_next = stepLabLib.get_path('xpath_btn_next', 'AUTO_REG_PATHS')
 
 # >>> Ввод номера телефона
 
 # >>> Кнопка войти (ГЛАВНАЯ СТРАНИЦА ММ)
-xpath_entrance = get_paths_function_reg.get_path('xpath_entrance')
+xpath_entrance = stepLabLib.get_path('xpath_entrance', 'AUTO_REG_PATHS')
 
-auth_with_sberID_btn_path = get_paths_function_reg.get_path('auth_with_sberID_btn_path')
+auth_with_sberID_btn_path = stepLabLib.get_path('auth_with_sberID_btn_path', 'AUTO_REG_PATHS')
 
 # >>> Ввод номера телефона для регистрации
-xpath_entry_number = get_paths_function_reg.get_path('xpath_entry_number')
+xpath_entry_number = stepLabLib.get_path('xpath_entry_number', 'AUTO_REG_PATHS')
 
 # >>> Подтверждение введеного номера телефона для регистрации
-xpath_entry_number_accept_btn = get_paths_function_reg.get_path('xpath_entry_number_accept_btn')
+xpath_entry_number_accept_btn = stepLabLib.get_path('xpath_entry_number_accept_btn', 'AUTO_REG_PATHS')
 
-xpath_entry_verification = get_paths_function_reg.get_path('xpath_entry_verification')
+xpath_entry_verification = stepLabLib.get_path('xpath_entry_verification', 'AUTO_REG_PATHS')
 
 
 # >>> Прогрев
 
 # Кнопка купить в карточке товара
-buy_btn_path = get_paths_function_reg.get_path('buy_btn_path')
+buy_btn_path = stepLabLib.get_path('buy_btn_path', 'AUTO_REG_PATHS')
 
 # Кнопка перейти в корзину в карточке товара
 
-go_to_cors_list_path = get_paths_function_reg.get_path('go_to_cors_list_path')
+go_to_cors_list_path = stepLabLib.get_path('go_to_cors_list_path', 'AUTO_REG_PATHS')
 
 # Кнопка оформить заказ
 
-go_to_order_create_path = get_paths_function_reg.get_path('go_to_order_create_path')
+go_to_order_create_path = stepLabLib.get_path('go_to_order_create_path', 'AUTO_REG_PATHS')
 # Предложение об оформлении карты
 
-cancle_window_path = get_paths_function_reg.get_path('cancle_window_path')
+cancle_window_path = stepLabLib.get_path('cancle_window_path', 'AUTO_REG_PATHS')
 
 # Ввод адреса
 
-entry_addres_path = get_paths_function_reg.get_path('entry_addres_path')
+entry_addres_path = stepLabLib.get_path('entry_addres_path', 'AUTO_REG_PATHS')
 
 # Выбор способа оплаты
 
-sber_pay_span_path = get_paths_function_reg.get_path('sber_pay_span_path')
+sber_pay_span_path = stepLabLib.get_path('sber_pay_span_path', 'AUTO_REG_PATHS')
 
-cancle_order_path = get_paths_function_reg.get_path('cancle_order_path')
+cancle_order_path = stepLabLib.get_path('cancle_order_path', 'AUTO_REG_PATHS')
 
-reason_cancel_path = get_paths_function_reg.get_path('reason_cancel_path')
+reason_cancel_path = stepLabLib.get_path('reason_cancel_path', 'AUTO_REG_PATHS')
 
-accept_btn_cancel_order_path = get_paths_function_reg.get_path('accept_btn_cancel_order_path')
+accept_btn_cancel_order_path = stepLabLib.get_path('accept_btn_cancel_order_path', 'AUTO_REG_PATHS')
 
-entry_entrance_path = get_paths_function_reg.get_path('entry_entrance_path')
+entry_entrance_path = stepLabLib.get_path('entry_entrance_path', 'AUTO_REG_PATHS')
 
-entry_floor_path = get_paths_function_reg.get_path('entry_floor_path')
+entry_floor_path = stepLabLib.get_path('entry_floor_path', 'AUTO_REG_PATHS')
 
-entry_block_path = get_paths_function_reg.get_path('entry_block_path')
+entry_block_path = stepLabLib.get_path('entry_block_path', 'AUTO_REG_PATHS')
 
-entry_domofon_path = get_paths_function_reg.get_path('entry_domofon_path')
+entry_domofon_path = stepLabLib.get_path('entry_domofon_path', 'AUTO_REG_PATHS')
 
-on_sber_bonus_path = get_paths_function_reg.get_path('on_sber_bonus_path')
+on_sber_bonus_path = stepLabLib.get_path('on_sber_bonus_path', 'AUTO_REG_PATHS')
 
-accept_on_sber_bonus_path = get_paths_function_reg.get_path('accept_on_sber_bonus_path')
+accept_on_sber_bonus_path = stepLabLib.get_path('accept_on_sber_bonus_path', 'AUTO_REG_PATHS')
 
-google_btn = get_paths_function_reg.get_path('google_btn')
+google_btn = stepLabLib.get_path('google_btn', 'AUTO_REG_PATHS')
 
-sber_pay_buy_path = get_paths_function_reg.get_path('sber_pay_buy_path')
+sber_pay_buy_path = stepLabLib.get_path('sber_pay_buy_path', 'AUTO_REG_PATHS')
 
 # >>> Добавить в БД
-input_change_adres_locate_path = get_paths_function_reg.get_path('input_change_adres_locate_path')
-take_menu_adres_click = get_paths_function_reg.get_path('take_menu_adres_click')
-accept_change_adres_locate_path = get_paths_function_reg.get_path('accept_change_adres_locate_path')
+input_change_adres_locate_path = stepLabLib.get_path('input_change_adres_locate_path', 'AUTO_REG_PATHS')
+take_menu_adres_click = stepLabLib.get_path('take_menu_adres_click', 'AUTO_REG_PATHS')
+accept_change_adres_locate_path = stepLabLib.get_path('accept_change_adres_locate_path', 'AUTO_REG_PATHS')
 
 url = 'https://smshub.org/stubs/handler_api.php'
 proxy = {
@@ -219,6 +220,9 @@ def start_registrarion(num, user_n, m):
         way_to_cookies = data['way_to_cookies']
         way_to_nvalid_cookies = data['way_to_nvalid_cookies']
         way_to_dont_grev_cookies = data['way_to_dont_grev_cookies']
+        use_http_proxy = data['use_http_proxy']
+        use_https_proxy = data['use_https_proxy']
+        use_socks_proxy = data['use_socks_proxy']
         use_grev = data['use_grev']
         use_rand_mails = data['use_rand_mails']
         use_activate_sber_spasibo = data['use_activate_sber_spasibo']
@@ -226,47 +230,12 @@ def start_registrarion(num, user_n, m):
         use_mobile_proxy = data['use_mobile_proxy']
         link_change_mobile_proxy = data['link_change_mobile_proxy']
 
-    def get_chromedriver():
-        options = webdriver.ChromeOptions()
-        ua = ua_generator.generate(device='desktop', browser='chrome')
-        prefs = {"profile.default_content_setting_values.notifications": 2}
-        geo = {"profile.default_content_setting_values.geolocation": 2}
-        options.add_experimental_option("prefs", prefs)
-        options.add_experimental_option("prefs", geo)
-        options.add_argument(f'user-agent={ua}')
-        options.add_argument("--ignore-certificate-errors")
-        options.add_argument("--allow-running-insecure-content")
-        options.add_argument("--enable-automation")
-        options.add_argument("--disable-infobars")
-        options.add_argument("--disable-notifications")
-        options.add_argument("--disable-save-password-bubble")
-        options.add_argument("--disable-translate")
-        options.add_argument("--disable-offer-upload-credit-cards")
-        options.page_load_strategy = 'eager'
-
-        # >>> Добавление прокси в браузер
-        if use_txt_proxy == 'True':
-            PROXY = f'{proxy_host}:{proxy_port}'
-            options.add_argument('--proxy-server=%s' % PROXY)
-            options.add_extension(f'{path_to_dir}/proxt_auto_auth.crx')
-
-        if use_mobile_proxy == 'True':
-            PROXY = f'{proxy_host}:{proxy_port}'
-            options.add_argument('--proxy-server=%s' % PROXY)
-            options.add_extension(f'{path_to_dir}/proxt_auto_auth.crx')
-
-        driver = webdriver.Chrome(options=options)
-        return driver
-
-    print(num)
-
-    # >>> Настройки браузера
+    # >>> Получение экземпляра driver
     try:
-        driver = get_chromedriver()
+        driver = stepLabLib.get_chromedriver(use_txt_proxy, use_mobile_proxy)
     except Exception as ex:
-        botEx.send_message(882124917, f'Ошибка у пользователя {user_n}\n{ex}\n СТРОКА 231 VirtualNumbers')
-        botEx.send_message(5203489590, f'Ошибка у пользователя {user_n}\n{ex}\n СТРОКА 231 VirtualNumbers')
-        print(ex)
+        botEx.send_message(882124917,
+                           f'Ошибка у пользователя {user_n}\nSMM check\n\n{ex}\nСТРОКА SMM Checker 81 ОШИБКА В НАСТРОЙКЕ БРАУЗЕРА')
         return
 
     # >>> Блок создания переменной для используемого номера
@@ -283,92 +252,45 @@ def start_registrarion(num, user_n, m):
         driver.close()
         return
 
-    # >>> Блок авторизации в прокси
+    # >>> Авторизация проксей
     if use_txt_proxy == 'True' or use_mobile_proxy == 'True':
+        print('Вызов функции для авторизации')
+        stepLabLib.proxy_auth(driver, proxy_host, proxy_port, proxy_username, proxy_password, use_http_proxy,
+                              use_https_proxy, use_socks_proxy)
 
-        driver.get('chrome-extension://ggmdpepbjljkkkdaklfihhngmmgmpggp/options.html')
-        tabs = driver.window_handles
-        driver.switch_to.window(tabs[0])
-        driver.set_window_size(1920, 1080)
-        time.sleep(2)
-        driver.refresh()
-        try:
-            input_proxy_login = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#login')))
-            input_proxy_login.send_keys(f'{proxy_username}')
-        except Exception as ex:
-            print(ex)
+    print('ASdasdsad')
+    try:
+        if use_mobile_proxy == 'True':
+            while True:
+                url_change = f'{link_change_mobile_proxy}'
 
-        try:
-            input_proxy_password = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, '#password')))
-            input_proxy_password.send_keys(f'{proxy_password}')
-        except Exception as ex:
-            print(ex)
-
-        try:
-            accept_proxy_settings = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, '#save')))
-            accept_proxy_settings.click()
-        except Exception as ex:
-            print(ex)
-    else:
-        pass
-
-    if use_mobile_proxy == 'True':
-        while True:
-            url_change_proxy = f'{link_change_mobile_proxy}'
-
-            response = requests.get(url_change_proxy)
-            if response.status_code == 200:
-                print('Поменялся')
-                break
-            else:
-                print('Не поменялся')
-    else:
-        pass
-
-    driver.refresh()
-    time.sleep(0.5)
-    driver.refresh()
-
-    if use_mobile_proxy == 'False':
-        # >>> Блок откртия Google для обхода капчи
-        try:
-            driver.get('https://www.google.ru/')
-            time.sleep(2)
-            driver.set_window_size(1920, 1080)
-            try:
-                tring = "//div[text()='Accept all']"
-                trs = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH, tring)))
-                trs.click()
-            except:
-                pass
-            click_func(driver, google_btn, 10)
-            time.sleep(5)
-            driver.get('https://www.google.com/search?q=%D0%BC%D0%B5%D0%B3%D0%B0%D0%BC%D0%B0%D1%80%D0%BA%D0%B5%D1%82&oq=%D0%BC%D0%B5%D0%B3%D0%B0%D0%BC%D0%B0%D1%80%D0%BA%D0%B5%D1%82&gs_lcrp=EgZjaHJvbWUyBggAEEUYOdIBCDI5NDdqMGo0qAIAsAIA&sourceid=chrome&ie=UTF-8')
-            try:
-                tring = "//div[text()='Accept all']"
-                trs = WebDriverWait(driver, 3).until(EC.element_to_be_clickable((By.XPATH, tring)))
-                trs.click()
-            except:
-                pass
-            path = "//*[contains(text(), 'Мегамаркет')]"
-            elements = WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.XPATH, path)))
-            elements.click()
-
-        except:
+                response = requests.get(url_change)
+                if response.status_code == 200:
+                    print('Поменялся')
+                    break
+                else:
+                    print('Не поменялся')
+        else:
             pass
-    else:
-        pass
 
-    if use_mobile_proxy == 'True':
-        driver.get('https://megamarket.ru/')
-    else:
-        pass
+        driver.refresh()
+        time.sleep(0.5)
+        driver.refresh()
+
+        # >>> Открытие сайта MM через поисковик
+        if use_mobile_proxy == 'False':
+            print('выДАМл')
+            stepLabLib.go_to_mm_site(driver)
+        # >>> Открытие сайта MM через переход по ссылке
+        else:
+            driver.get('https://megamarket.ru/')
+            time.sleep(15)
+    except Exception as ex:
+        print(ex)
 
     time.sleep(15)
 
-    click_func(driver, xpath_entrance, 120)
+    click_func(driver, xpath_entrance, 10)
 
     # >>> Проверка наличия капчи на сайте
     html_check_valid = driver.page_source
@@ -517,7 +439,7 @@ def start_registrarion(num, user_n, m):
                 with open(f'{path_to_dir}/accounts.txt', 'w', encoding='utf-8') as f:
                     f.write(f'{number}  {m}')
             else:
-                with open('accounts.txt', 'a', encoding='utf-8') as f:
+                with open(f'{path_to_dir}/accounts.txt', 'a', encoding='utf-8') as f:
                     f.write(f'{number}  {m}')
             # >>> Отправка данных в бота
             try:
@@ -792,11 +714,10 @@ def Pool(user_n):
         start_registrarion(num, user_n, m)
     try:
         with ThreadPoolExecutor(max_workers=int(pool_value)) as executor:
+            global proxy_host, proxy_port, proxy_username, proxy_password
             for num in number_list:
-                if use_txt_proxy == 'True':
-                    global proxy_attempts, proxy_host, proxy_port, proxy_username, proxy_password
+                try:
                     if use_txt_proxy == 'True':
-                        global proxy_host, proxy_port, proxy_username, proxy_password
                         proxy_get = proxy_list[0]
                         b = proxy_get.split(':')
                         # Настройка прокси
@@ -819,13 +740,16 @@ def Pool(user_n):
                         proxy_port = data[1]
                         proxy_username = data[2]
                         proxy_password = data[3]
-                    else:
-                        pass
+                except Exception as ex:
+                    botEx.send_message(882124917,
+                                       f'Ошибка у пользователя {user_n}\nSMM check\n\n{ex}\nСТРОКА SMM Cheker 350 ОШИБКА В ПРОКСИ')
+                    print(ex)
+                    return
                 executor.submit(process_number, num)
                 time.sleep(5)  # Добавляем задержку в 3 секунды между вызовами функций
             executor.shutdown(wait=True)
             to_json_result = {'f_num': f'{found_numbers}', 'i_num': f'{invalid_account}', 's_num': f'{sucsesful}'}
-            with open('results.json', 'w') as f:
+            with open(f'{path_to_dir}/results.json', 'w') as f:
                 json.dump(to_json_result, f)
     except Exception as ex:
         print(ex)
