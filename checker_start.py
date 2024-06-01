@@ -18,40 +18,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from config import host, db_name, user, password
-
-path_to_dir = os.path.dirname(sys.executable)
-
-def get_path(name_path):
-    con = pymysql.connect(
-        host=host,
-        port=3306,
-        user=user,
-        password=password,
-        database=db_name,
-        cursorclass=pymysql.cursors.DictCursor
-    )
-
-    with con.cursor() as cursor:
-        check_all_rows = f"SELECT * FROM Checker_paths"
-        cursor.execute(check_all_rows)
-        data_sql = cursor.fetchall()
-        for data in data_sql:
-            if data['name_path'] == f'{name_path}':
-
-                path = [
-                    (By.XPATH, data['value_xpath']),
-                    (By.CSS_SELECTOR, data['value_css']),
-                    (By.CLASS_NAME, data['value_class'])
-                ]
-                return path
+import stepLabLib
 
 
-google_btn = get_path('google_btn')
-accept_auth_btn_path = get_path('accept_auth_btn_path')
-auth_with_sberid_path = get_path('auth_with_sberid_path')
-
-
-
+auth_with_sberid_path = stepLabLib.get_path('auth_with_sberid_path', 'AUTO_CHECK_PATHS')
+accept_auth_btn_path = stepLabLib.get_path('accept_auth_btn_path', 'AUTO_CHECK_PATHS')
 google_link_for_mm = 'https://www.google.com/search?q=%D0%BC%D0%B5%D0%B3%D0%B0%D0%BC%D0%B0%D1%80%D0%BA%D0%B5%D1%82&oq=%D0%BC%D0%B5%D0%B3%D0%B0%D0%BC%D0%B0%D1%80%D0%BA%D0%B5%D1%82&gs_lcrp=EgZjaHJvbWUyBggAEEUYOdIBCDI5NDdqMGo0qAIAsAIA&sourceid=chrome&ie=UTF-8'
 
 
@@ -63,18 +34,14 @@ proxy_port = None
 proxy_password = None
 proxy_username = None
 user_na = ''
+path_to_dir = os.path.dirname(sys.executable)
 
 def load_cookies(driver, cook_name):
-    print('1')
     try:
         with open(f'{path_to_dir}/mainData/smm_auto_check_settings.json', 'r', encoding='utf-8') as f:
-            print('2')
             data = json.load(f)
-            print('3')
             cookies_way = data['cookies_way']
-            print('4')
             use_sber_id_cookies = data['use_sber_id_cookies']
-            print('5')
 
             # >>> Загрузка JSON куков в браузер
             try:
@@ -127,8 +94,19 @@ def load_cookies(driver, cook_name):
 
 
 def start(cook):
+    print('In Main Func start')
+
+    # >>> Переменные данных об аккаунте
+    bonus_value = None
+    valut_promocode = None
+    order_status = None
+    check_order = None
+    find_name_cook = cook.split('.')
+    cook_name = cook
+    cook_type = find_name_cook[1]
+
     # >>> Чтение настроек
-    with open(f'{path_to_dir}/mainData/smm_auto_check_settings.json', 'r', encoding='utf-8') as f:
+    with open(f'{path_to_dir}/smm_auto_check_settings.json', 'r', encoding='utf-8') as f:
         data = json.load(f)
         cookies_way = data['cookies_way']
         use_txt_proxy = data['use_txt_proxy']
@@ -141,159 +119,56 @@ def start(cook):
         use_sber_id_cookies = data['use_sber_id_cookies']
         link_change_mobile_proxy = data['link_change_mobile_proxy']
         use_mobile_proxy = data['use_mobile_proxy']
-    print('In Main Func start')
-
-    # >>> Переменные данных об аккаунте
-    bonus_value = None
-    valut_promocode = None
-    order_status = None
-    check_order = None
-
-    find_name_cook = cook.split('.')
-    cook_name = cook
-    cook_type = find_name_cook[1]
+        use_http_proxy = data['use_http_proxy']
+        use_https_proxy = data['use_https_proxy']
+        use_socks_proxy = data['use_socks_proxy']
 
     if cook_type == 'txt':
-        # Чтение данных из файла и преобразование в JSON
-        with open(f'{cookies_way}/{cook_name}', 'r') as file:
-            data = file.read()
-            json_data = json.loads(data)
-
-        os.remove(f'{cookies_way}/{cook_name}')
-        load_txt_cook = cook_name.split('.')
-        name_txt_cook = load_txt_cook[0]
-
-        # Запись данных в JSON-файл
-        with open(f'{cookies_way}/{name_txt_cook}.json', 'w', encoding='utf-8') as f:
-            json.dump(json_data, f, indent=4, ensure_ascii=False)
-        cook_name = f'{name_txt_cook}.json'
-
-    # >>> Создание объекта класса webdriver
-    def get_chromedriver():
-        options = webdriver.ChromeOptions()
-        ua = ua_generator.generate(device='desktop', browser='chrome')
-        prefs = {"profile.default_content_setting_values.notifications": 2}
-        geo = {"profile.default_content_setting_values.geolocation": 2}
-        options.add_experimental_option("prefs", prefs)
-        options.add_experimental_option("prefs", geo)
-        options.add_argument(f'user-agent={ua}')
-        options.add_argument("--ignore-certificate-errors")
-        options.add_argument("--allow-running-insecure-content")
-        options.add_argument("--enable-automation")
-        options.add_argument("--disable-infobars")
-        options.add_argument("--disable-notifications")
-        options.add_argument("--disable-save-password-bubble")
-        options.add_argument("--disable-translate")
-        options.add_argument("--disable-offer-upload-credit-cards")
-        options.add_experimental_option("prefs", prefs)
-        options.page_load_strategy = 'eager'
-        if use_txt_proxy == 'True':
-            PROXY = f'{proxy_host}:{proxy_port}'
-            options.add_argument('--proxy-server=%s' % PROXY)
-            options.add_extension('proxt_auto_auth.crx')
-        else:
-            pass
-        if use_mobile_proxy == 'True':
-            PROXY = f'{proxy_host}:{proxy_port}'
-            options.add_argument('--proxy-server=%s' % PROXY)
-            options.add_extension('proxt_auto_auth.crx')
-        else:
-            pass
-        driver = webdriver.Chrome(options=options)
-        return driver
+        cook_name = stepLabLib.converter_cookies(cookies_way, cook_name)
 
     # >>> Получение экземпляра driver
     try:
-        driver = get_chromedriver()
+        driver = stepLabLib.get_chromedriver(use_txt_proxy, use_mobile_proxy)
     except Exception as ex:
         botEx.send_message(882124917, f'Ошибка у пользователя {user_na}\nSMM check\n\n{ex}\nСТРОКА SMM Checker 81 ОШИБКА В НАСТРОЙКЕ БРАУЗЕРА')
         return
 
-    # >>> Переход на google.com
+    # >>> Авторизация проксей
     if use_txt_proxy == 'True' or use_mobile_proxy == 'True':
-        driver.get('chrome-extension://ggmdpepbjljkkkdaklfihhngmmgmpggp/options.html')
-        tabs = driver.window_handles
-        driver.switch_to.window(tabs[0])
-        driver.set_window_size(1920, 1080)
-        time.sleep(2)
+        print('Вызов функции для авторизации')
+        stepLabLib.proxy_auth(driver, proxy_host, proxy_port, proxy_username, proxy_password, use_http_proxy, use_https_proxy, use_socks_proxy)
+
+    print('ASdasdsad')
+    try:
+        if use_mobile_proxy == 'True':
+            while True:
+                url = f'{link_change_mobile_proxy}'
+
+                response = requests.get(url)
+                if response.status_code == 200:
+                    print('Поменялся')
+                    break
+                else:
+                    print('Не поменялся')
+        else:
+            pass
+
         driver.refresh()
-        try:
-            input_proxy_login = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#login')))
-            input_proxy_login.send_keys(f'{proxy_username}')
-        except Exception as ex:
-            print(ex)
+        time.sleep(0.5)
+        driver.refresh()
 
-        try:
-            input_proxy_password = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#password')))
-            input_proxy_password.send_keys(f'{proxy_password}')
-        except Exception as ex:
-            print(ex)
+        # >>> Открытие сайта MM через поисковик
+        if use_mobile_proxy == 'False':
+            print('выДАМл')
+            stepLabLib.go_to_mm_site(driver)
+        # >>> Открытие сайта MM через переход по ссылке
+        else:
+            driver.get('https://megamarket.ru/')
+            time.sleep(15)
+    except Exception as ex:
+        print(ex)
 
-        try:
-            accept_proxy_settings = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '#save')))
-            accept_proxy_settings.click()
-        except Exception as ex:
-            print(ex)
-    else:
-        pass
-
-    if use_mobile_proxy == 'True':
-        while True:
-            url = f'{link_change_mobile_proxy}'
-
-            response = requests.get(url)
-            if response.status_code == 200:
-                print('Поменялся')
-                break
-            else:
-                print('Не поменялся')
-    else:
-        pass
-
-    driver.refresh()
-    time.sleep(0.5)
-    driver.refresh()
-
-    if use_mobile_proxy == 'False':
-        driver.get('https://www.google.ru/')
-        driver.set_window_size(1920, 1080)
-        # >>> Подтверждение cookies в google.com
-        try:
-            tring = "//div[text()='Accept all']"
-            trs = WebDriverWait(driver, 2).until(EC.element_to_be_clickable((By.XPATH, tring)))
-            trs.click()
-        except:
-            pass
-
-        # >>> Нажатие на кнопку мне повезет
-        for by, seletor in google_btn:
-            try:
-                cap = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((by, seletor)))
-                cap.click()
-                driver.get(google_link_for_mm)
-            except:
-                pass
-        # >>> Подтверждение cookies в google.com
-        try:
-            tring = "//div[text()='Accept all']"
-            trs = WebDriverWait(driver, 2).until(EC.element_to_be_clickable((By.XPATH, tring)))
-            trs.click()
-        except:
-            pass
-
-        # >>> Переход на мм
-        path = "//*[contains(text(), 'Мегамаркет')]"
-        try:
-            elements = WebDriverWait(driver, 15).until(EC.element_to_be_clickable((By.XPATH, path)))
-            elements.click()
-        except:
-            pass
-        time.sleep(15)
-    else:
-        driver.get('https://megamarket.ru/')
-        driver.set_window_size(1920, 1080)
-        time.sleep(15)
-
+    # >>> Проверка наличия капчи
     html_check_valid = driver.page_source
     soup_check_valid = BeautifulSoup(html_check_valid, 'html.parser')
     status_elements_order = soup_check_valid.find_all(class_='header-profile-actions')
@@ -309,13 +184,7 @@ def start(cook):
 
     # >>> Нажатие на кнопку авторизоваться
     if use_sber_id_cookies == 'True':
-        for by, selector in auth_with_sberid_path:
-            try:
-                auth_with_sberid = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((by, selector)))
-                auth_with_sberid.click()
-                break
-            except:
-                pass
+        stepLabLib.click_func(driver, auth_with_sberid_path, 10)
     else:
         pass
 
@@ -329,8 +198,8 @@ def start(cook):
             print(ex)
     else:
         pass
-    print('ВЫЗОВ load_cookies')
-    load_cookies(driver, cook_name)
+
+    stepLabLib.load_cookies(driver, use_sber_id_cookies, cook_name, cookies_way)
     time.sleep(3)
 
     # >>> Рефиш страницы для cookies со сберID
@@ -342,13 +211,7 @@ def start(cook):
 
     # >>> Нажатие на кнопку продолжить
     if use_sber_id_cookies == 'True':
-        for by, selector in accept_auth_btn_path:
-            try:
-                accept_auth_btn = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((by, selector)))
-                accept_auth_btn.click()
-                break
-            except:
-                pass
+        stepLabLib.click_func(driver, accept_auth_btn_path, 10)
     else:
         pass
 
@@ -418,7 +281,7 @@ def start(cook):
 
     # >>> Запись данных в Excel таблицу
     try:
-        wb = load_workbook(f"{path_to_dir}/data.xlsx")
+        wb = load_workbook(f'{path_to_dir}/data.xlsx')
         ws = wb.active
         start_row = 1
         while ws.cell(row=start_row, column=1).value is not None:
@@ -441,7 +304,7 @@ def start(cook):
         for item in data:
             ws.cell(row=start_row, column=column, value=item)
             column += 1
-        wb.save("data.xlsx")
+        wb.save(f'{path_to_dir}/data.xlsx')
     except Exception as ex:
         botEx.send_message(882124917, f'Ошибка у пользователя {user_na}\nSMM check\n\n{ex}\nСТРОКА SMM Checker 270 ОШИБКА В ЗАПИСИ ТАБЛИЦЫ')
 
@@ -530,37 +393,33 @@ def Pool(user_n):
         start(cook)
 
     with ThreadPoolExecutor(max_workers=int(pool_value)) as executer:
+        global proxy_host, proxy_port, proxy_username, proxy_password
         print(cookies_list)
         for cook in cookies_list:
             try:
                 if use_txt_proxy == 'True':
-                    global proxy_attempts, proxy_host, proxy_port, proxy_username, proxy_password
-                    if use_txt_proxy == 'True':
-                        global proxy_host, proxy_port, proxy_username, proxy_password
-                        proxy_get = proxy_list[0]
-                        b = proxy_get.split(':')
-                        # Настройка прокси
-                        proxy_host = b[0]
-                        proxy_port = b[1]
-                        proxy_username = b[2]
-                        proxy_password = b[3]
-                        del proxy_list[0]
-                        a = open(f'{txt_uses_proxy_way}', 'r', encoding='utf-8')
-                        if a == '':
-                            with open(f'{txt_uses_proxy_way}', 'w', encoding='utf-8') as f:
-                                f.write(proxy + '\n')
-                        else:
-                            with open(f'{txt_uses_proxy_way}', 'a', encoding='utf-8') as f:
-                                f.write(proxy + '\n')
-                        a.close()
-                    elif use_mobile_proxy == 'True':
-                        data = mobile_proxy.split(':')
-                        proxy_host = data[0]
-                        proxy_port = data[1]
-                        proxy_username = data[2]
-                        proxy_password = data[3]
-                else:
-                    pass
+                    proxy_get = proxy_list[0]
+                    b = proxy_get.split(':')
+                    # Настройка прокси
+                    proxy_host = b[0]
+                    proxy_port = b[1]
+                    proxy_username = b[2]
+                    proxy_password = b[3]
+                    del proxy_list[0]
+                    a = open(f'{txt_uses_proxy_way}', 'r', encoding='utf-8')
+                    if a == '':
+                        with open(f'{txt_uses_proxy_way}', 'w', encoding='utf-8') as f:
+                            f.write(proxy + '\n')
+                    else:
+                        with open(f'{txt_uses_proxy_way}', 'a', encoding='utf-8') as f:
+                            f.write(proxy + '\n')
+                    a.close()
+                elif use_mobile_proxy == 'True':
+                    data = mobile_proxy.split(':')
+                    proxy_host = data[0]
+                    proxy_port = data[1]
+                    proxy_username = data[2]
+                    proxy_password = data[3]
             except Exception as ex:
                 botEx.send_message(882124917, f'Ошибка у пользователя {user_na}\nSMM check\n\n{ex}\nСТРОКА SMM Cheker 350 ОШИБКА В ПРОКСИ')
                 print(ex)
