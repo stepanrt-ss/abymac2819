@@ -11,20 +11,16 @@ from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
-import buyer_start
-import checker_start
+import reger_start
+# import regerwn_start
 import ui_files.authUI
 import ui_files.buyerUI
 import ui_files.chekerUI
 import ui_files.regerUI
 import ui_files.choiseUI
-import reger_start
-import regerwn_start
-from config import host, db_name, user, password
+import checker_start
 
-name_pc = os.getenv('USER')
-path_to_dir = os.path.dirname(sys.executable)
-print(path_to_dir)
+from config import host, db_name, user, password
 
 
 user_n = ''
@@ -37,12 +33,15 @@ con = pymysql.connect(
             cursorclass=pymysql.cursors.DictCursor
         )
 list_names_bag_files = []
+path_to_dir = os.path.dirname(sys.executable)
+
+
 
 class auth(QtWidgets.QMainWindow, ui_files.authUI.Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.setWindowIcon(QIcon('icon.png'))
+        self.setWindowIcon(QIcon(f'{path_to_dir}/icon.png'))
 
         # >>> Коннекты интерфейсов
         self.open_choise_ui = choise()
@@ -140,9 +139,8 @@ class choise(QtWidgets.QMainWindow, ui_files.choiseUI.Ui_Dialog):
         self.setWindowIcon(QIcon('icon.png'))
 
         # >>> Коннекты интерфейсов
-        self.open_reger = smm_auto_reg()
-        self.open_buyer = smm_auto_buy()
         self.open_cheker = smm_auto_check()
+        self.open_reger = smm_auto_reg()
 
         # >>> Коннекты кнопок
         self.accept_btn.clicked.connect(self.open_choise_programm)
@@ -175,7 +173,7 @@ class smm_auto_reg(QtWidgets.QMainWindow, ui_files.regerUI.Ui_Dialog):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.setWindowIcon(QIcon('icon.png'))
+        self.setWindowIcon(QIcon(f'{path_to_dir}/icon.png'))
 
         # >>> Коннекты кнопок
         self.start_auto_reg_btn.clicked.connect(self.start_smm_auto_reg)  # Запуск программы
@@ -213,9 +211,10 @@ class smm_auto_reg(QtWidgets.QMainWindow, ui_files.regerUI.Ui_Dialog):
         th.start()
 
     def start_thread_regerwn_start(self, user_n):  # Старт регера с физ номерами
-        print('sad')
-        th = threading.Thread(target=regerwn_start.Pool, args=(user_n,))
-        th.start()
+        pass
+        # print('sad')
+        # th = threading.Thread(target=regerwn_start.Pool, args=(user_n,))
+        # th.start()
 
     # >>> Show results ui
     def check_results_smm_auto_reg(self):
@@ -245,14 +244,14 @@ class smm_auto_reg(QtWidgets.QMainWindow, ui_files.regerUI.Ui_Dialog):
         way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
         txt_way = way[0]
         if txt_way:
-            self.proxy_txt_way.setText(txt_way)
+            self.txt_proxy_way.setText(txt_way)
 
     def choise_uses_proxy_txt_way(self):  # Путь до использованных прокси
         options = QFileDialog.Options()
         way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
         txt_way = way[0]
         if txt_way:
-            self.proxy_uses_txt_way.setText(txt_way)
+            self.txt_usue_proxy_way.setText(txt_way)
 
     def save_settings(self):
         # >>> Cookies ways
@@ -260,8 +259,8 @@ class smm_auto_reg(QtWidgets.QMainWindow, ui_files.regerUI.Ui_Dialog):
             way_to_cookies = self.cookies_way.text()  # Путь до куков
             way_to_nvalid_cookies = self.cookies_way_nvalid.text()  # Путь до невалидных куков
             way_to_dont_grev_cookies = self.cookies_way_dont_greb.text()  # Путь до негретых куков
-            way_to_txt_proxy = self.proxy_txt_way.text()  # Путь до прокси
-            way_to_uses_txt_proxy = self.proxy_uses_txt_way.text()  # Путь до использованных прокси
+            way_to_txt_proxy = self.txt_proxy_way.text()  # Путь до прокси
+            way_to_uses_txt_proxy = self.txt_usue_proxy_way.text()  # Путь до использованных прокси
 
             # >>> Inputs data
             number_price = self.input_price_number.text()  # Цена номера
@@ -275,6 +274,9 @@ class smm_auto_reg(QtWidgets.QMainWindow, ui_files.regerUI.Ui_Dialog):
             mails = self.input_mail.toPlainText()  # Почты для регистрации
             mobile_proxy = self.input_mobile_proxy.text()
             link_change_mobile_proxy = self.input_link_change_mobile_proxy.text()
+            use_http_proxy = self.use_http_proxy_radio.isChecked()  # Использовать HTTP прокси
+            use_https_proxy = self.use_https_proxy_radio.isChecked()  # Использовать HTTPS прокси
+            use_socks_proxy = self.use_socks_proxy_radio.isChecked()  # Использовать socks5 прокси
 
             # >>> Inputs CheckBoxs
             use_grev = self.grev_box.isChecked()  # Отключить прогрев
@@ -302,6 +304,9 @@ class smm_auto_reg(QtWidgets.QMainWindow, ui_files.regerUI.Ui_Dialog):
                        'way_to_txt_proxy': f'{way_to_txt_proxy}',
                        'way_to_uses_txt_proxy': f'{way_to_uses_txt_proxy}',
                        'use_mobile_proxy': f'{use_mobile_proxy}',
+                       'use_http_proxy': f'{use_http_proxy}',
+                       'use_https_proxy': f'{use_https_proxy}',
+                       'use_socks_proxy': f'{use_socks_proxy}',
                        'use_txt_proxy': f'{use_txt_proxy}',
                        'use_grev': f'{use_grev}',
                        'use_rand_mails': f'{use_rand_mails}',
@@ -422,411 +427,411 @@ class smm_auto_reg(QtWidgets.QMainWindow, ui_files.regerUI.Ui_Dialog):
         self.input_adres_bag.setText(adres_bag)
         self.input_link_change_mobile_proxy.setText(link_change_mobile_proxy)
         self.input_mobile_proxy.setText(mobile_proxy)
-        self.proxy_txt_way.setText(way_to_txt_proxy)
-        self.proxy_uses_txt_way.setText(way_to_uses_txt_proxy)
+        self.txt_proxy_way.setText(way_to_txt_proxy)
+        self.txt_usue_proxy_way.setText(way_to_uses_txt_proxy)
         self.cookies_way.setText(way_to_cookies)
         self.cookies_way_nvalid.setText(way_to_nvalid_cookies)
         self.cookies_way_dont_greb.setText(way_to_dont_grev_cookies)
-
-
-class smm_auto_buy(QtWidgets.QMainWindow, ui_files.buyerUI.Ui_Dialog):
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-        self.setWindowIcon(QIcon('icon.png'))
-
-        # >>> Коннекты кнопок
-        self.run_program_btn.clicked.connect(self.start_smm_auto_buy)  # Запуск программы
-
-        # >>> Bag
-        self.add_bag_btn.clicked.connect(self.save_bag_settings)  # Добавить в корзину
-        self.delite_bag_btn.clicked.connect(self.change_bag_settings)  # Удалить из корзину
-
-        # >>> Ways to cookies
-        self.way_to_cookies_btn.clicked.connect(self.change_cookies_way)  # Путь до куков
-        self.way_to_cookies_in_run_btn.clicked.connect(self.change_run_cookies_way)  # Путь до запущенных куков
-        self.way_to_uses_cookies_btn.clicked.connect(self.change_uses_cookies_way)  # Путь до использованных куков
-        self.way_to_nvalid_cookies_btn.clicked.connect(self.change_cookies_nvalid_way)  # Путь до невалидных куков
-        self.way_to_dont_grev_cookies_btn.clicked.connect(self.change_dont_grev_cookies_way)
-        self.way_to_dont_chenge_cookies_btn.clicked.connect(self.change_dont_change_cookies_way)
-
-        # >>> Ways to txt files
-        self.way_to_txt_proxy_btn.clicked.connect(self.change_proxy_txt_way)  # Путь до прокси
-        self.way_to_uses_txt_proxy_btn.clicked.connect(self.change_uses_proxy_txt_way)  # Путь до использованных прокси
-        self.way_to_txt_comment_btn.clicked.connect(self.change_comment_txt_way)  # Путь до коментариев к заказам
-        self.way_to_promocodes_btn.clicked.connect(self.change_promocode_txt_way)  # Путь до промокодов
-        self.way_to_uses_promo_btn.clicked.connect(self.change_uses_promocode_txt_way)  # Путь до использованных промокодов
-        self.way_to_nvalid_promocodes_btn.clicked.connect(self.change_nvalid_promocode_txt_way)  # Путь до невалидных промокодов
-        self.way_to_txt_adres_btn.clicked.connect(self.change_adres_deliv_txt_way)
-
-        # >>> Save settings
-        self.save_settings_btn.clicked.connect(self.save_settings)
-
-        if os.path.exists(f'{path_to_dir}/mainData/smm_auto_buy_setting.json') == True:
-            self.auto_fil()
-        else:
-            pass
-        self.auto_fill_bag_settings()
-
-    # >>> Run program
-    def start_smm_auto_buy(self):  # Запуск программы
-        self.therds()
-
-    def therds(self):
-        list_bag_names = list_names_bag_files
-        th = threading.Thread(target=buyer_start.Pool, args=(list_bag_names, user_n, ))
-        th.start()
-
-    # >>> Bag settings#
-    def change_bag_settings(self):  # Удалить из корзины
-        try:
-            row = self.list_bag.currentRow()
-            if row == int(-1):
-                self.alert_msg('Не выбран товар для удаления из списка')
-            else:
-                self.list_bag.takeItem(row)
-                file = list_names_bag_files[row]
-                list_names_bag_files.pop(row)
-                os.remove(f'{path_to_dir}/mainData/bag_data/{file}')
-        except Exception as ex:
-            print(ex)
-            self.alert_msg('Список пустой, удалять нечего.')
-
-    def save_bag_settings(self):  # Добавить в корзину
-        name_bag_file = self.name_bag.text()
-        link_bag = self.link_bag.text()
-        value_bag = self.value_bag.text()
-        print('sad')
-
-        to_json = {'link_bag': f'{link_bag}', 'value_bag': f'{value_bag}'}
-
-        with open(f'{path_to_dir}/mainData/bag_data/{name_bag_file}.json', 'w', encoding='utf-8') as f:
-            json.dump(to_json, f)
-        try:
-            list_names_bag_files.append(f'{name_bag_file}.json')
-            self.list_bag.addItem(name_bag_file + f' [{value_bag}] шт.')
-            print(list_names_bag_files)
-        except Exception as ex:
-            print(ex)
-
-    def auto_fill_bag_settings(self):
-        '''Функция для работы с хуями'''
-        list = os.listdir(f'{path_to_dir}/mainData/bag_data')
-        if len(list) == 0:
-            pass
-        else:
-            for name in list:
-                list_names_bag_files.append(name)
-                with open(f'{path_to_dir}/mainData/bag_data/{name}', 'r', encoding='utf-8') as f:
-                    data = json.load(f)
-                    value_bag = data['value_bag']
-                name_file = name.split('.')
-                name_string = name_file[0]
-                self.list_bag.addItem(name_string + f' [{value_bag}] шт.')
-            else:
-                print(list_names_bag_files)
-
-    # >>> Cookies ways
-    def change_cookies_way(self):  # Путь до куков
-        options = QFileDialog.Options()
-        cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
-        if cookies_way:
-            self.cookies_way.setText(cookies_way)
-
-    def change_cookies_nvalid_way(self):  # Путь до невалидных куков
-        options = QFileDialog.Options()
-        cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
-        if cookies_way:
-            self.cookies_nvalid_way.setText(cookies_way)
-
-    def change_run_cookies_way(self):  # Путь до запущенных куков
-        options = QFileDialog.Options()
-        cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
-        if cookies_way:
-            self.cookies_in_run_way.setText(cookies_way)
-
-    def change_uses_cookies_way(self):  # Путь до использованных куков
-        options = QFileDialog.Options()
-        cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
-        if cookies_way:
-            self.cookies_uses_way.setText(cookies_way)
-
-    def change_dont_grev_cookies_way(self):  # Путь до негретых куков
-        options = QFileDialog.Options()
-        cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
-        if cookies_way:
-            self.cookies_dont_grev_way.setText(cookies_way)
-
-    def change_dont_change_cookies_way(self):
-        options = QFileDialog.Options()
-        cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
-        if cookies_way:
-            self.cookies_dont_change_way.setText(cookies_way)
-
-    # >>> Txt ways
-    def change_proxy_txt_way(self):  # Путь до прокси
-        options = QFileDialog.Options()
-        way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
-        txt_way = way[0]
-        if txt_way:
-            self.txt_proxy_way.setText(txt_way)
-
-    def change_uses_proxy_txt_way(self):  # Путь до использованных прокси
-        options = QFileDialog.Options()
-        way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
-        txt_way = way[0]
-        if txt_way:
-            self.txt_usue_proxy_way.setText(txt_way)
-
-    def change_comment_txt_way(self):  # Путь до коментариев к заказам
-        options = QFileDialog.Options()
-        way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
-        txt_way = way[0]
-        if txt_way:
-            self.txt_cooment_way.setText(txt_way)
-
-    def change_promocode_txt_way(self):  # Путь до промокодов
-        options = QFileDialog.Options()
-        way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
-        txt_way = way[0]
-        if txt_way:
-            self.txt_promocode_way.setText(txt_way)
-
-    def change_uses_promocode_txt_way(self):  # Путь до использованных промокодов
-        options = QFileDialog.Options()
-        way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
-        txt_way = way[0]
-        if txt_way:
-            self.txt_promocode_uses_way.setText(txt_way)
-
-    def change_nvalid_promocode_txt_way(self):  # Путь до невалидных промокодов
-        options = QFileDialog.Options()
-        way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
-        txt_way = way[0]
-        if txt_way:
-            self.txt_promocode_nvalid_way.setText(txt_way)
-
-    def change_adres_deliv_txt_way(self):
-        options = QFileDialog.Options()
-        way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
-        txt_way = way[0]
-        if txt_way:
-            self.txt_adres_way.setText(txt_way)
-
-    # >>> Save settings
-    def save_settings(self):  # Сохранение настроек
-        # >>> CheckBox data
-        use_check_bonus_value = self.use_check_bonus_value_box.isChecked()  # Проверять скидку по промокоду
-        use_txt_proxy = self.use_txt_proxy_box.isChecked()  # Использовать прокси из txt
-        use_txt_comment = self.use_txt_comment_box.isChecked()  # Использовать коментарии из txt
-        use_txt_promocode = self.use_txt_promocode_box.isChecked()
-        use_clear_bag = self.use_clear_bag_box.isChecked()  # Очищать корзину
-        use_check_grev = self.use_check_grev_box.isChecked()  # Проверять прогрев
-        use_on_sber_spas = self.use_on_sber_spas_box.isChecked()  # Включать бонусную программу
-        use_random_adres = self.use_random_adres_box.isChecked()  # Использовать рандомный вторичный адрес
-        use_random_data_for_deliv = self.use_random_data_for_deliv.isChecked()  # Импользовать рандомные данные для подмены получателя
-        use_cookies_with_sber_id = self.use_cookies_with_sberID_box.isChecked()  # Использовать sberID cookies
-        use_mobile_proxy = self.use_mobile_proxy_box.isChecked()  # Использовать мобильные прокси
-        use_txt_adres_deliv = self.use_txt_adres_deliv_box.isChecked()
-        use_promocode_from_lk = self.use_promocode_from_lk_box.isChecked()
-        use_change_poluchatel_from_link = self.use_change_poluchatel_from_link_box.isChecked()
-
-        # >>> Inputs data
-        fixed_promocode = self.input_fixed_promocode.text()  # Фиксированиый промокод
-        pay_phone = self.input_phone_for_pay.text()  # Телефон для оплаты
-        deliv_phone = self.input_phone_for_deliv.text()  # Телефон для доставки
-        deliv_first_name = self.input_first_name_for_deliv.text()
-        deliv_last_name = self.input_last_name_for_deliv.text()
-        adres_deliv = self.input_adres_deliv.text()  # Адрес доставки
-        adres_entrance = self.input_entrance_deliv.text()  # Номер подъезда
-        adres_floor = self.input_floor_deliv.text()  # Номер этажа
-        adres_block = self.input_block_deliv.text()  # Номер квартиры
-        adres_domofon = self.input_domofon_deliv.text()  # Номер домофона
-        check_promocode_price = self.input_check_promocode_price.text()  # Сумма скидки по промокоду
-        pool_value = self.input_pool_value.text()  # Количество потоков
-        telegram_api = self.input_telegram_api.text()  # Telegram API
-        mobile_proxy = self.input_mobile_proxy.text()  # Мобильные прокси
-        link_change_mobile_proxy = self.input_link_change_mobile_proxy.text()  # Ссылка для замены IP мобильных прокси
-
-        # >>> Cookies ways
-        cookies_way = self.cookies_way.text()  # Путь до куков
-        cookies_in_run_way = self.cookies_in_run_way.text()  # Путь до куков в работе
-        cookies_nvalid_way = self.cookies_nvalid_way.text()  # Путь до невалидных куков
-        cookies_uses_way = self.cookies_uses_way.text()  # Путь до использованных куков
-        cookies_dont_grev_way = self.cookies_dont_grev_way.text()  # Путь до негретых куков
-        cookies_dont_change_way = self.cookies_dont_change_way.text()  # Путь до куков без замены получателя
-
-        # >>> Promocode ways
-        txt_promocode_way = self.txt_promocode_way.text()  # Путь до промокодов
-        txt_promocode_uses_way = self.txt_promocode_uses_way.text()  # Путь до использованных промокодов
-        txt_promocode_nvalid_way = self.txt_promocode_nvalid_way.text()  # Путь до невалидных промокодов
-
-        # >>> Other ways
-        txt_comments_way = self.txt_cooment_way.text()  # Путь до комментариев к заказам
-        txt_proxy_way = self.txt_proxy_way.text()  # Путь до прокси
-        txt_uses_proxy_way = self.txt_usue_proxy_way.text()
-        txt_adres_way = self.txt_adres_way.text()
-
-        # >>> Write to json
-        to_json = {'fixed_promocode': f'{fixed_promocode}',
-                   'telegram_api': f'{telegram_api}',
-                   'pay_phone': f'{pay_phone}',
-                   'deliv_phone': f'{deliv_phone}',
-                   'deliv_first_name': f'{deliv_first_name}',
-                   'deliv_last_name': f'{deliv_last_name}',
-                   'adres_deliv': f'{adres_deliv}',
-                   'adres_entrance': f'{adres_entrance}',
-                   'adres_floor': f'{adres_floor}',
-                   'adres_block': f'{adres_block}',
-                   'adres_domofon': f'{adres_domofon}',
-                   'check_promocode_price': f'{check_promocode_price}',
-                   'pool_value': f'{pool_value}',
-                   'mobile_proxy': f'{mobile_proxy}',
-                   'link_change_mobile_proxy': f'{link_change_mobile_proxy}',
-                   'cookies_way': f'{cookies_way}',
-                   'cookies_in_run_way': f'{cookies_in_run_way}',
-                   'cookies_nvalid_way': f'{cookies_nvalid_way}',
-                   'cookies_uses_way': f'{cookies_uses_way}',
-                   'cookies_dont_grev_way': f'{cookies_dont_grev_way}',
-                   'cookies_dont_change_way': f'{cookies_dont_change_way}',
-                   'txt_promocode_way': f'{txt_promocode_way}',
-                   'txt_promocode_uses_way': f'{txt_promocode_uses_way}',
-                   'txt_promocode_nvalid_way': f'{txt_promocode_nvalid_way}',
-                   'txt_comments_way': f'{txt_comments_way}',
-                   'txt_proxy_way': f'{txt_proxy_way}',
-                   'txt_uses_proxy_way': f'{txt_uses_proxy_way}',
-                   'txt_adres_way': f'{txt_adres_way}',
-                   'use_change_poluchatel_from_link': f'{use_change_poluchatel_from_link}',
-                   'use_promocode_from_lk': f'{use_promocode_from_lk}',
-                   'use_txt_adres_deliv': f'{use_txt_adres_deliv}',
-                   'use_mobile_proxy': f'{use_mobile_proxy}',
-                   'use_random_data_for_deliv': f'{use_random_data_for_deliv}',
-                   'use_cookies_with_sber_id': f'{use_cookies_with_sber_id}',
-                   'use_random_adres': f'{use_random_adres}',
-                   'use_txt_promocode': f'{use_txt_promocode}',
-                   'use_check_bonus_value': f'{use_check_bonus_value}',
-                   'use_txt_proxy': f'{use_txt_proxy}',
-                   'use_txt_comment': f'{use_txt_comment}',
-                   'use_clear_bag': f'{use_clear_bag}',
-                   'use_check_grev': f'{use_check_grev}',
-                   'use_on_sber_spas': f'{use_on_sber_spas}'}
-        with open(f'{path_to_dir}/mainData/smm_auto_buy_setting.json', 'w', encoding='utf-8') as f:
-            json.dump(to_json, f, indent=4)
-        auth.message_window('Настройки успешно сохранены')
-
-    # >>> Alert window
-    @staticmethod
-    def alert_msg(msg):
-        error_message = QMessageBox()
-        error_message.setIcon(QMessageBox.Critical)
-        error_message.setText("Произошла ошибка:")
-        error_message.setInformativeText(str(msg))
-        error_message.setWindowTitle("Error")
-        error_message.exec_()
-
-    def str_to_bool(self, data):
-        if data == 'True':
-            return True
-        else:
-            return False
-
-
-    def auto_fil(self):
-        with open(f'{path_to_dir}/mainData/smm_auto_buy_setting.json', 'r', encoding='utf-8') as f:
-            data = json.load(f)
-            fixed_promocode = data['fixed_promocode']
-            telegram_api = data['telegram_api']
-            pay_phone = data['pay_phone']
-            deliv_phone = data['deliv_phone']
-            deliv_first_name = data['deliv_first_name']
-            deliv_last_name = data['deliv_last_name']
-            adres_deliv = data['adres_deliv']
-            adres_entrance = data['adres_entrance']
-            adres_floor = data['adres_floor']
-            adres_block = data['adres_block']
-            adres_domofon = data['adres_domofon']
-            check_promocode_price = data['check_promocode_price']
-            pool_value = data['pool_value']
-            mobile_proxy = data['mobile_proxy']
-            link_change_mobile_proxy = data['link_change_mobile_proxy']
-            cookies_way = data['cookies_way']
-            cookies_in_run_way = data['cookies_in_run_way']
-            cookies_nvalid_way = data['cookies_nvalid_way']
-            cookies_uses_way = data['cookies_uses_way']
-            cookies_dont_grev_way = data['cookies_dont_grev_way']
-            cookies_dont_change_way = data['cookies_dont_change_way']
-            txt_promocode_way = data['txt_promocode_way']
-            txt_promocode_uses_way = data['txt_promocode_uses_way']
-            txt_promocode_nvalid_way = data['txt_promocode_nvalid_way']
-            txt_comments_way = data['txt_comments_way']
-            txt_proxy_way = data['txt_proxy_way']
-            txt_uses_proxy_way = data['txt_uses_proxy_way']
-            txt_adres_way = data['txt_adres_way']
-            use_change_poluchatel_from_link = data['use_change_poluchatel_from_link']
-            use_promocode_from_lk = data['use_promocode_from_lk']
-            use_txt_adres_deliv = data['use_txt_adres_deliv']
-            use_mobile_proxy = data['use_mobile_proxy']
-            use_random_data_for_deliv = data['use_random_data_for_deliv']
-            use_cookies_with_sber_id = data['use_cookies_with_sber_id']
-            use_random_adres = data['use_random_adres']
-            use_txt_promocode = data['use_txt_promocode']
-            use_check_bonus_value = data['use_check_bonus_value']
-            use_txt_proxy = data['use_txt_proxy']
-            use_txt_comment = data['use_txt_comment']
-            use_clear_bag = data['use_clear_bag']
-            use_check_grev = data['use_check_grev']
-            use_on_sber_spas = data['use_on_sber_spas']
-
-        self.use_change_poluchatel_from_link_box.setChecked(self.str_to_bool(use_change_poluchatel_from_link))
-        self.use_promocode_from_lk_box.setChecked(self.str_to_bool(use_promocode_from_lk))
-        self.use_txt_adres_deliv_box.setChecked(self.str_to_bool(use_txt_adres_deliv))
-        self.use_mobile_proxy_box.setChecked(self.str_to_bool(use_mobile_proxy))
-        self.use_random_data_for_deliv.setChecked(self.str_to_bool(use_random_data_for_deliv))
-        self.use_cookies_with_sberID_box.setChecked(self.str_to_bool(use_cookies_with_sber_id))
-        self.use_random_adres_box.setChecked(self.str_to_bool(use_random_adres))
-        self.use_txt_promocode_box.setChecked(self.str_to_bool(use_txt_promocode))
-        self.use_check_bonus_value_box.setChecked(self.str_to_bool(use_check_bonus_value))
-        self.use_txt_proxy_box.setChecked(self.str_to_bool(use_txt_proxy))
-        self.use_txt_comment_box.setChecked(self.str_to_bool(use_txt_comment))
-        self.use_clear_bag_box.setChecked(self.str_to_bool(use_clear_bag))
-        self.use_check_grev_box.setChecked(self.str_to_bool(use_check_grev))
-        self.use_on_sber_spas_box.setChecked(self.str_to_bool(use_on_sber_spas))
-        self.input_fixed_promocode.setText(fixed_promocode)
-        self.input_telegram_api.setText(telegram_api)
-        self.input_phone_for_pay.setText(pay_phone)
-        self.input_phone_for_deliv.setText(deliv_phone)
-        self.input_first_name_for_deliv.setText(deliv_first_name)
-        self.input_last_name_for_deliv.setText(deliv_last_name)
-        self.input_adres_deliv.setText(adres_deliv)
-        self.input_adres_deliv.setText(adres_deliv)
-        self.input_entrance_deliv.setText(adres_entrance)
-        self.input_floor_deliv.setText(adres_floor)
-        self.input_block_deliv.setText(adres_block)
-        self.input_domofon_deliv.setText(adres_domofon)
-        self.input_check_promocode_price.setText(check_promocode_price)
-        self.input_pool_value.setText(pool_value)
-        self.cookies_way.setText(cookies_way)
-        self.cookies_in_run_way.setText(cookies_in_run_way)
-        self.cookies_nvalid_way.setText(cookies_nvalid_way)
-        self.cookies_uses_way.setText(cookies_uses_way)
-        self.cookies_dont_grev_way.setText(cookies_dont_grev_way)
-        self.cookies_dont_change_way.setText(cookies_dont_change_way)
-        self.txt_promocode_way.setText(txt_promocode_way)
-        self.txt_promocode_uses_way.setText(txt_promocode_uses_way)
-        self.txt_promocode_nvalid_way.setText(txt_promocode_nvalid_way)
-        self.txt_cooment_way.setText(txt_comments_way)
-        self.txt_proxy_way.setText(txt_proxy_way)
-        self.txt_usue_proxy_way.setText(txt_uses_proxy_way)
-        self.txt_adres_way.setText(txt_adres_way)
-        self.input_mobile_proxy.setText(mobile_proxy)
-        self.input_link_change_mobile_proxy.setText(link_change_mobile_proxy)
+#
+#
+# class smm_auto_buy(QtWidgets.QMainWindow, ui_files.buyerUI.Ui_Dialog):
+#     def __init__(self):
+#         super().__init__()
+#         self.setupUi(self)
+#         self.setWindowIcon(QIcon('icon.png'))
+#
+#         # >>> Коннекты кнопок
+#         self.run_program_btn.clicked.connect(self.start_smm_auto_buy)  # Запуск программы
+#
+#         # >>> Bag
+#         self.add_bag_btn.clicked.connect(self.save_bag_settings)  # Добавить в корзину
+#         self.delite_bag_btn.clicked.connect(self.change_bag_settings)  # Удалить из корзину
+#
+#         # >>> Ways to cookies
+#         self.way_to_cookies_btn.clicked.connect(self.change_cookies_way)  # Путь до куков
+#         self.way_to_cookies_in_run_btn.clicked.connect(self.change_run_cookies_way)  # Путь до запущенных куков
+#         self.way_to_uses_cookies_btn.clicked.connect(self.change_uses_cookies_way)  # Путь до использованных куков
+#         self.way_to_nvalid_cookies_btn.clicked.connect(self.change_cookies_nvalid_way)  # Путь до невалидных куков
+#         self.way_to_dont_grev_cookies_btn.clicked.connect(self.change_dont_grev_cookies_way)
+#         self.way_to_dont_chenge_cookies_btn.clicked.connect(self.change_dont_change_cookies_way)
+#
+#         # >>> Ways to txt files
+#         self.way_to_txt_proxy_btn.clicked.connect(self.change_proxy_txt_way)  # Путь до прокси
+#         self.way_to_uses_txt_proxy_btn.clicked.connect(self.change_uses_proxy_txt_way)  # Путь до использованных прокси
+#         self.way_to_txt_comment_btn.clicked.connect(self.change_comment_txt_way)  # Путь до коментариев к заказам
+#         self.way_to_promocodes_btn.clicked.connect(self.change_promocode_txt_way)  # Путь до промокодов
+#         self.way_to_uses_promo_btn.clicked.connect(self.change_uses_promocode_txt_way)  # Путь до использованных промокодов
+#         self.way_to_nvalid_promocodes_btn.clicked.connect(self.change_nvalid_promocode_txt_way)  # Путь до невалидных промокодов
+#         self.way_to_txt_adres_btn.clicked.connect(self.change_adres_deliv_txt_way)
+#
+#         # >>> Save settings
+#         self.save_settings_btn.clicked.connect(self.save_settings)
+#
+#         if os.path.exists('mainData/smm_auto_buy_setting.json') == True:
+#             self.auto_fil()
+#         else:
+#             pass
+#         self.auto_fill_bag_settings()
+#
+#     # >>> Run program
+#     def start_smm_auto_buy(self):  # Запуск программы
+#         self.therds()
+#
+#     def therds(self):
+#         list_bag_names = list_names_bag_files
+#         th = threading.Thread(target=buyer_start.Pool, args=(list_bag_names, user_n, ))
+#         th.start()
+#
+#     # >>> Bag settings#
+#     def change_bag_settings(self):  # Удалить из корзины
+#         try:
+#             row = self.list_bag.currentRow()
+#             if row == int(-1):
+#                 self.alert_msg('Не выбран товар для удаления из списка')
+#             else:
+#                 self.list_bag.takeItem(row)
+#                 file = list_names_bag_files[row]
+#                 list_names_bag_files.pop(row)
+#                 os.remove(f'mainData/bag_data/{file}')
+#         except Exception as ex:
+#             print(ex)
+#             self.alert_msg('Список пустой, удалять нечего.')
+#
+#     def save_bag_settings(self):  # Добавить в корзину
+#         name_bag_file = self.name_bag.text()
+#         link_bag = self.link_bag.text()
+#         value_bag = self.value_bag.text()
+#         print('sad')
+#
+#         to_json = {'link_bag': f'{link_bag}', 'value_bag': f'{value_bag}'}
+#
+#         with open(f'mainData/bag_data/{name_bag_file}.json', 'w', encoding='utf-8') as f:
+#             json.dump(to_json, f)
+#         try:
+#             list_names_bag_files.append(f'{name_bag_file}.json')
+#             self.list_bag.addItem(name_bag_file + f' [{value_bag}] шт.')
+#             print(list_names_bag_files)
+#         except Exception as ex:
+#             print(ex)
+#
+#     def auto_fill_bag_settings(self):
+#         '''Функция для работы с хуями'''
+#         list = os.listdir('mainData/bag_data')
+#         if len(list) == 0:
+#             pass
+#         else:
+#             for name in list:
+#                 list_names_bag_files.append(name)
+#                 with open(f'mainData/bag_data/{name}', 'r', encoding='utf-8') as f:
+#                     data = json.load(f)
+#                     value_bag = data['value_bag']
+#                 name_file = name.split('.')
+#                 name_string = name_file[0]
+#                 self.list_bag.addItem(name_string + f' [{value_bag}] шт.')
+#             else:
+#                 print(list_names_bag_files)
+#
+#     # >>> Cookies ways
+#     def change_cookies_way(self):  # Путь до куков
+#         options = QFileDialog.Options()
+#         cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
+#         if cookies_way:
+#             self.cookies_way.setText(cookies_way)
+#
+#     def change_cookies_nvalid_way(self):  # Путь до невалидных куков
+#         options = QFileDialog.Options()
+#         cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
+#         if cookies_way:
+#             self.cookies_nvalid_way.setText(cookies_way)
+#
+#     def change_run_cookies_way(self):  # Путь до запущенных куков
+#         options = QFileDialog.Options()
+#         cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
+#         if cookies_way:
+#             self.cookies_in_run_way.setText(cookies_way)
+#
+#     def change_uses_cookies_way(self):  # Путь до использованных куков
+#         options = QFileDialog.Options()
+#         cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
+#         if cookies_way:
+#             self.cookies_uses_way.setText(cookies_way)
+#
+#     def change_dont_grev_cookies_way(self):  # Путь до негретых куков
+#         options = QFileDialog.Options()
+#         cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
+#         if cookies_way:
+#             self.cookies_dont_grev_way.setText(cookies_way)
+#
+#     def change_dont_change_cookies_way(self):
+#         options = QFileDialog.Options()
+#         cookies_way = QFileDialog.getExistingDirectory(self, "Выбрать папку", options=options)
+#         if cookies_way:
+#             self.cookies_dont_change_way.setText(cookies_way)
+#
+#     # >>> Txt ways
+#     def change_proxy_txt_way(self):  # Путь до прокси
+#         options = QFileDialog.Options()
+#         way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
+#         txt_way = way[0]
+#         if txt_way:
+#             self.txt_proxy_way.setText(txt_way)
+#
+#     def change_uses_proxy_txt_way(self):  # Путь до использованных прокси
+#         options = QFileDialog.Options()
+#         way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
+#         txt_way = way[0]
+#         if txt_way:
+#             self.txt_usue_proxy_way.setText(txt_way)
+#
+#     def change_comment_txt_way(self):  # Путь до коментариев к заказам
+#         options = QFileDialog.Options()
+#         way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
+#         txt_way = way[0]
+#         if txt_way:
+#             self.txt_cooment_way.setText(txt_way)
+#
+#     def change_promocode_txt_way(self):  # Путь до промокодов
+#         options = QFileDialog.Options()
+#         way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
+#         txt_way = way[0]
+#         if txt_way:
+#             self.txt_promocode_way.setText(txt_way)
+#
+#     def change_uses_promocode_txt_way(self):  # Путь до использованных промокодов
+#         options = QFileDialog.Options()
+#         way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
+#         txt_way = way[0]
+#         if txt_way:
+#             self.txt_promocode_uses_way.setText(txt_way)
+#
+#     def change_nvalid_promocode_txt_way(self):  # Путь до невалидных промокодов
+#         options = QFileDialog.Options()
+#         way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
+#         txt_way = way[0]
+#         if txt_way:
+#             self.txt_promocode_nvalid_way.setText(txt_way)
+#
+#     def change_adres_deliv_txt_way(self):
+#         options = QFileDialog.Options()
+#         way = QFileDialog.getOpenFileName(self, "Выбрать папку", options=options)
+#         txt_way = way[0]
+#         if txt_way:
+#             self.txt_adres_way.setText(txt_way)
+#
+#     # >>> Save settings
+#     def save_settings(self):  # Сохранение настроек
+#         # >>> CheckBox data
+#         use_check_bonus_value = self.use_check_bonus_value_box.isChecked()  # Проверять скидку по промокоду
+#         use_txt_proxy = self.use_txt_proxy_box.isChecked()  # Использовать прокси из txt
+#         use_txt_comment = self.use_txt_comment_box.isChecked()  # Использовать коментарии из txt
+#         use_txt_promocode = self.use_txt_promocode_box.isChecked()
+#         use_clear_bag = self.use_clear_bag_box.isChecked()  # Очищать корзину
+#         use_check_grev = self.use_check_grev_box.isChecked()  # Проверять прогрев
+#         use_on_sber_spas = self.use_on_sber_spas_box.isChecked()  # Включать бонусную программу
+#         use_random_adres = self.use_random_adres_box.isChecked()  # Использовать рандомный вторичный адрес
+#         use_random_data_for_deliv = self.use_random_data_for_deliv.isChecked()  # Импользовать рандомные данные для подмены получателя
+#         use_cookies_with_sber_id = self.use_cookies_with_sberID_box.isChecked()  # Использовать sberID cookies
+#         use_mobile_proxy = self.use_mobile_proxy_box.isChecked()  # Использовать мобильные прокси
+#         use_txt_adres_deliv = self.use_txt_adres_deliv_box.isChecked()
+#         use_promocode_from_lk = self.use_promocode_from_lk_box.isChecked()
+#         use_change_poluchatel_from_link = self.use_change_poluchatel_from_link_box.isChecked()
+#
+#         # >>> Inputs data
+#         fixed_promocode = self.input_fixed_promocode.text()  # Фиксированиый промокод
+#         pay_phone = self.input_phone_for_pay.text()  # Телефон для оплаты
+#         deliv_phone = self.input_phone_for_deliv.text()  # Телефон для доставки
+#         deliv_first_name = self.input_first_name_for_deliv.text()
+#         deliv_last_name = self.input_last_name_for_deliv.text()
+#         adres_deliv = self.input_adres_deliv.text()  # Адрес доставки
+#         adres_entrance = self.input_entrance_deliv.text()  # Номер подъезда
+#         adres_floor = self.input_floor_deliv.text()  # Номер этажа
+#         adres_block = self.input_block_deliv.text()  # Номер квартиры
+#         adres_domofon = self.input_domofon_deliv.text()  # Номер домофона
+#         check_promocode_price = self.input_check_promocode_price.text()  # Сумма скидки по промокоду
+#         pool_value = self.input_pool_value.text()  # Количество потоков
+#         telegram_api = self.input_telegram_api.text()  # Telegram API
+#         mobile_proxy = self.input_mobile_proxy.text()  # Мобильные прокси
+#         link_change_mobile_proxy = self.input_link_change_mobile_proxy.text()  # Ссылка для замены IP мобильных прокси
+#
+#         # >>> Cookies ways
+#         cookies_way = self.cookies_way.text()  # Путь до куков
+#         cookies_in_run_way = self.cookies_in_run_way.text()  # Путь до куков в работе
+#         cookies_nvalid_way = self.cookies_nvalid_way.text()  # Путь до невалидных куков
+#         cookies_uses_way = self.cookies_uses_way.text()  # Путь до использованных куков
+#         cookies_dont_grev_way = self.cookies_dont_grev_way.text()  # Путь до негретых куков
+#         cookies_dont_change_way = self.cookies_dont_change_way.text()  # Путь до куков без замены получателя
+#
+#         # >>> Promocode ways
+#         txt_promocode_way = self.txt_promocode_way.text()  # Путь до промокодов
+#         txt_promocode_uses_way = self.txt_promocode_uses_way.text()  # Путь до использованных промокодов
+#         txt_promocode_nvalid_way = self.txt_promocode_nvalid_way.text()  # Путь до невалидных промокодов
+#
+#         # >>> Other ways
+#         txt_comments_way = self.txt_cooment_way.text()  # Путь до комментариев к заказам
+#         txt_proxy_way = self.txt_proxy_way.text()  # Путь до прокси
+#         txt_uses_proxy_way = self.txt_usue_proxy_way.text()
+#         txt_adres_way = self.txt_adres_way.text()
+#
+#         # >>> Write to json
+#         to_json = {'fixed_promocode': f'{fixed_promocode}',
+#                    'telegram_api': f'{telegram_api}',
+#                    'pay_phone': f'{pay_phone}',
+#                    'deliv_phone': f'{deliv_phone}',
+#                    'deliv_first_name': f'{deliv_first_name}',
+#                    'deliv_last_name': f'{deliv_last_name}',
+#                    'adres_deliv': f'{adres_deliv}',
+#                    'adres_entrance': f'{adres_entrance}',
+#                    'adres_floor': f'{adres_floor}',
+#                    'adres_block': f'{adres_block}',
+#                    'adres_domofon': f'{adres_domofon}',
+#                    'check_promocode_price': f'{check_promocode_price}',
+#                    'pool_value': f'{pool_value}',
+#                    'mobile_proxy': f'{mobile_proxy}',
+#                    'link_change_mobile_proxy': f'{link_change_mobile_proxy}',
+#                    'cookies_way': f'{cookies_way}',
+#                    'cookies_in_run_way': f'{cookies_in_run_way}',
+#                    'cookies_nvalid_way': f'{cookies_nvalid_way}',
+#                    'cookies_uses_way': f'{cookies_uses_way}',
+#                    'cookies_dont_grev_way': f'{cookies_dont_grev_way}',
+#                    'cookies_dont_change_way': f'{cookies_dont_change_way}',
+#                    'txt_promocode_way': f'{txt_promocode_way}',
+#                    'txt_promocode_uses_way': f'{txt_promocode_uses_way}',
+#                    'txt_promocode_nvalid_way': f'{txt_promocode_nvalid_way}',
+#                    'txt_comments_way': f'{txt_comments_way}',
+#                    'txt_proxy_way': f'{txt_proxy_way}',
+#                    'txt_uses_proxy_way': f'{txt_uses_proxy_way}',
+#                    'txt_adres_way': f'{txt_adres_way}',
+#                    'use_change_poluchatel_from_link': f'{use_change_poluchatel_from_link}',
+#                    'use_promocode_from_lk': f'{use_promocode_from_lk}',
+#                    'use_txt_adres_deliv': f'{use_txt_adres_deliv}',
+#                    'use_mobile_proxy': f'{use_mobile_proxy}',
+#                    'use_random_data_for_deliv': f'{use_random_data_for_deliv}',
+#                    'use_cookies_with_sber_id': f'{use_cookies_with_sber_id}',
+#                    'use_random_adres': f'{use_random_adres}',
+#                    'use_txt_promocode': f'{use_txt_promocode}',
+#                    'use_check_bonus_value': f'{use_check_bonus_value}',
+#                    'use_txt_proxy': f'{use_txt_proxy}',
+#                    'use_txt_comment': f'{use_txt_comment}',
+#                    'use_clear_bag': f'{use_clear_bag}',
+#                    'use_check_grev': f'{use_check_grev}',
+#                    'use_on_sber_spas': f'{use_on_sber_spas}'}
+#         with open('mainData/smm_auto_buy_setting.json', 'w', encoding='utf-8') as f:
+#             json.dump(to_json, f, indent=4)
+#         auth.message_window('Настройки успешно сохранены')
+#
+#     # >>> Alert window
+#     @staticmethod
+#     def alert_msg(msg):
+#         error_message = QMessageBox()
+#         error_message.setIcon(QMessageBox.Critical)
+#         error_message.setText("Произошла ошибка:")
+#         error_message.setInformativeText(str(msg))
+#         error_message.setWindowTitle("Error")
+#         error_message.exec_()
+#
+#     def str_to_bool(self, data):
+#         if data == 'True':
+#             return True
+#         else:
+#             return False
+#
+#
+#     def auto_fil(self):
+#         with open('mainData/smm_auto_buy_setting.json', 'r', encoding='utf-8') as f:
+#             data = json.load(f)
+#             fixed_promocode = data['fixed_promocode']
+#             telegram_api = data['telegram_api']
+#             pay_phone = data['pay_phone']
+#             deliv_phone = data['deliv_phone']
+#             deliv_first_name = data['deliv_first_name']
+#             deliv_last_name = data['deliv_last_name']
+#             adres_deliv = data['adres_deliv']
+#             adres_entrance = data['adres_entrance']
+#             adres_floor = data['adres_floor']
+#             adres_block = data['adres_block']
+#             adres_domofon = data['adres_domofon']
+#             check_promocode_price = data['check_promocode_price']
+#             pool_value = data['pool_value']
+#             mobile_proxy = data['mobile_proxy']
+#             link_change_mobile_proxy = data['link_change_mobile_proxy']
+#             cookies_way = data['cookies_way']
+#             cookies_in_run_way = data['cookies_in_run_way']
+#             cookies_nvalid_way = data['cookies_nvalid_way']
+#             cookies_uses_way = data['cookies_uses_way']
+#             cookies_dont_grev_way = data['cookies_dont_grev_way']
+#             cookies_dont_change_way = data['cookies_dont_change_way']
+#             txt_promocode_way = data['txt_promocode_way']
+#             txt_promocode_uses_way = data['txt_promocode_uses_way']
+#             txt_promocode_nvalid_way = data['txt_promocode_nvalid_way']
+#             txt_comments_way = data['txt_comments_way']
+#             txt_proxy_way = data['txt_proxy_way']
+#             txt_uses_proxy_way = data['txt_uses_proxy_way']
+#             txt_adres_way = data['txt_adres_way']
+#             use_change_poluchatel_from_link = data['use_change_poluchatel_from_link']
+#             use_promocode_from_lk = data['use_promocode_from_lk']
+#             use_txt_adres_deliv = data['use_txt_adres_deliv']
+#             use_mobile_proxy = data['use_mobile_proxy']
+#             use_random_data_for_deliv = data['use_random_data_for_deliv']
+#             use_cookies_with_sber_id = data['use_cookies_with_sber_id']
+#             use_random_adres = data['use_random_adres']
+#             use_txt_promocode = data['use_txt_promocode']
+#             use_check_bonus_value = data['use_check_bonus_value']
+#             use_txt_proxy = data['use_txt_proxy']
+#             use_txt_comment = data['use_txt_comment']
+#             use_clear_bag = data['use_clear_bag']
+#             use_check_grev = data['use_check_grev']
+#             use_on_sber_spas = data['use_on_sber_spas']
+#
+#         self.use_change_poluchatel_from_link_box.setChecked(self.str_to_bool(use_change_poluchatel_from_link))
+#         self.use_promocode_from_lk_box.setChecked(self.str_to_bool(use_promocode_from_lk))
+#         self.use_txt_adres_deliv_box.setChecked(self.str_to_bool(use_txt_adres_deliv))
+#         self.use_mobile_proxy_box.setChecked(self.str_to_bool(use_mobile_proxy))
+#         self.use_random_data_for_deliv.setChecked(self.str_to_bool(use_random_data_for_deliv))
+#         self.use_cookies_with_sberID_box.setChecked(self.str_to_bool(use_cookies_with_sber_id))
+#         self.use_random_adres_box.setChecked(self.str_to_bool(use_random_adres))
+#         self.use_txt_promocode_box.setChecked(self.str_to_bool(use_txt_promocode))
+#         self.use_check_bonus_value_box.setChecked(self.str_to_bool(use_check_bonus_value))
+#         self.use_txt_proxy_box.setChecked(self.str_to_bool(use_txt_proxy))
+#         self.use_txt_comment_box.setChecked(self.str_to_bool(use_txt_comment))
+#         self.use_clear_bag_box.setChecked(self.str_to_bool(use_clear_bag))
+#         self.use_check_grev_box.setChecked(self.str_to_bool(use_check_grev))
+#         self.use_on_sber_spas_box.setChecked(self.str_to_bool(use_on_sber_spas))
+#         self.input_fixed_promocode.setText(fixed_promocode)
+#         self.input_telegram_api.setText(telegram_api)
+#         self.input_phone_for_pay.setText(pay_phone)
+#         self.input_phone_for_deliv.setText(deliv_phone)
+#         self.input_first_name_for_deliv.setText(deliv_first_name)
+#         self.input_last_name_for_deliv.setText(deliv_last_name)
+#         self.input_adres_deliv.setText(adres_deliv)
+#         self.input_adres_deliv.setText(adres_deliv)
+#         self.input_entrance_deliv.setText(adres_entrance)
+#         self.input_floor_deliv.setText(adres_floor)
+#         self.input_block_deliv.setText(adres_block)
+#         self.input_domofon_deliv.setText(adres_domofon)
+#         self.input_check_promocode_price.setText(check_promocode_price)
+#         self.input_pool_value.setText(pool_value)
+#         self.cookies_way.setText(cookies_way)
+#         self.cookies_in_run_way.setText(cookies_in_run_way)
+#         self.cookies_nvalid_way.setText(cookies_nvalid_way)
+#         self.cookies_uses_way.setText(cookies_uses_way)
+#         self.cookies_dont_grev_way.setText(cookies_dont_grev_way)
+#         self.cookies_dont_change_way.setText(cookies_dont_change_way)
+#         self.txt_promocode_way.setText(txt_promocode_way)
+#         self.txt_promocode_uses_way.setText(txt_promocode_uses_way)
+#         self.txt_promocode_nvalid_way.setText(txt_promocode_nvalid_way)
+#         self.txt_cooment_way.setText(txt_comments_way)
+#         self.txt_proxy_way.setText(txt_proxy_way)
+#         self.txt_usue_proxy_way.setText(txt_uses_proxy_way)
+#         self.txt_adres_way.setText(txt_adres_way)
+#         self.input_mobile_proxy.setText(mobile_proxy)
+#         self.input_link_change_mobile_proxy.setText(link_change_mobile_proxy)
 
 
 class smm_auto_check(QtWidgets.QMainWindow, ui_files.chekerUI.Ui_Dialog):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.setWindowIcon(QIcon('icon.png'))
+        self.setWindowIcon(QIcon(f'{path_to_dir}/icon.png'))
 
         # >>> Коннекты кнопок
         self.start_checker_btn.clicked.connect(self.start_smm_auto_check)  # Запуск программы
@@ -896,7 +901,10 @@ class smm_auto_check(QtWidgets.QMainWindow, ui_files.chekerUI.Ui_Dialog):
             use_send_data_telegram = self.send_data_telegram_box.isChecked()  # Использовать отправку данных в телеграм бота
             use_txt_proxy = self.use_txt_proxy_box.isChecked()  # Использовать прокси из txt
             use_sber_id_cookies = self.use_cookies_with_sberID_box.isChecked()  # Использовать куков со sberID
-            use_mobile_proxy = self.use_mobile_proxy_box.isChecked()
+            use_mobile_proxy = self.use_mobile_proxy_box.isChecked()  # Использовать мобильные прокси
+            use_http_proxy = self.use_http_proxy_radio.isChecked()  # Использовать HTTP прокси
+            use_https_proxy = self.use_https_proxy_radio.isChecked()  # Использовать HTTPS прокси
+            use_socks_proxy = self.use_socks_proxy_radio.isChecked()  # Использовать socks5 прокси
 
             # >>> Ways to files
             txt_proxy_way = self.txt_proxy_way.text()  # Путь к прокси
@@ -912,6 +920,9 @@ class smm_auto_check(QtWidgets.QMainWindow, ui_files.chekerUI.Ui_Dialog):
                        'link_change_mobile_proxy': f'{link_change_mobile_proxy}',
                        'txt_uses_proxy_way': f'{txt_uses_proxy_way}',
                        'cookies_uses_way': f'{cookies_uses_way}',
+                       'use_http_proxy': f'{use_http_proxy}',
+                       'use_https_proxy': f'{use_https_proxy}',
+                       'use_socks_proxy': f'{use_socks_proxy}',
                        'use_mobile_proxy': f'{use_mobile_proxy}',
                        'use_sber_id_cookies': f'{use_sber_id_cookies}',
                        'use_txt_proxy': f'{use_txt_proxy}',
