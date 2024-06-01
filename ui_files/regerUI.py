@@ -16,7 +16,7 @@ class Ui_Dialog(object):
         Dialog.setObjectName("Dialog")
         Dialog.setFixedSize(1000, 610)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("../../Pictures/icon.jpg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Dialog.setWindowIcon(icon)
         Dialog.setStyleSheet("background:qlineargradient(spread:reflect, x1:0.962682, y1:0, x2:0, y2:1, stop:0 rgba(201, 85, 19, 255), stop:1 rgba(67, 28, 6, 255))")
         self.tabWidget = QtWidgets.QTabWidget(Dialog)
@@ -97,7 +97,7 @@ class Ui_Dialog(object):
         self.frame_5.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_5.setObjectName("frame_5")
         self.label_10 = QtWidgets.QLabel(self.tab_1)
-        self.label_10.setGeometry(QtCore.QRect(400, 290, 251, 51))
+        self.label_10.setGeometry(QtCore.QRect(360, 290, 251, 51))
         font = QtGui.QFont()
         font.setFamily("Swis721 LtEx BT")
         font.setPointSize(20)
@@ -110,7 +110,7 @@ class Ui_Dialog(object):
         self.label_11.setStyleSheet("background: none\n"
 "")
         self.label_11.setText("")
-        self.label_11.setPixmap(QtGui.QPixmap("icon.png"))
+        self.label_11.setPixmap(QtGui.QPixmap("../../PycharmProjects/SMM multi/icon.png"))
         self.label_11.setScaledContents(True)
         self.label_11.setObjectName("label_11")
         self.tabWidget.addTab(self.tab_1, "")
@@ -415,7 +415,7 @@ class Ui_Dialog(object):
         self.label_12.setStyleSheet("background: none\n"
 "")
         self.label_12.setText("")
-        self.label_12.setPixmap(QtGui.QPixmap("icon.png"))
+        self.label_12.setPixmap(QtGui.QPixmap("../../PycharmProjects/SMM multi/icon.png"))
         self.label_12.setScaledContents(True)
         self.label_12.setObjectName("label_12")
         self.input_telegram_api = QtWidgets.QLineEdit(self.tab_2)
@@ -440,25 +440,52 @@ class Ui_Dialog(object):
         self.tabWidget.addTab(self.tab_2, "")
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tab_3")
-        self.input_mobile_proxy = QtWidgets.QLineEdit(self.tab_3)
-        self.input_mobile_proxy.setGeometry(QtCore.QRect(20, 80, 471, 31))
+        self.label_7 = QtWidgets.QLabel(self.tab_3)
+        self.label_7.setGeometry(QtCore.QRect(80, 30, 231, 31))
         font = QtGui.QFont()
-        font.setPointSize(10)
-        self.input_mobile_proxy.setFont(font)
-        self.input_mobile_proxy.setStyleSheet("QLineEdit {\n"
-"    background: rgb(224, 131, 61);\n"
-"    border: 2px solid rgb(0, 0, 0);\n"
-"    border-radius: 5px;\n"
-"    font-size: 14;\n"
-"    padding: 5px;\n"
-"    color: rgb(255, 255, 255);\n"
-"    \n"
-"}\n"
-"\n"
-"QLineEdit:focus {\n"
-"    border: 2px solid rgb(219, 123, 53);\n"
-"}")
-        self.input_mobile_proxy.setObjectName("input_mobile_proxy")
+        font.setFamily("Agency FB")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.label_7.setFont(font)
+        self.label_7.setStyleSheet("background: none;\n"
+"color: white")
+        self.label_7.setObjectName("label_7")
+        self.label_13 = QtWidgets.QLabel(self.tab_3)
+        self.label_13.setGeometry(QtCore.QRect(20, 20, 51, 41))
+        self.label_13.setStyleSheet("background: none\n"
+"")
+        self.label_13.setText("")
+        self.label_13.setPixmap(QtGui.QPixmap("../../PycharmProjects/SMM multi/icon.png"))
+        self.label_13.setScaledContents(True)
+        self.label_13.setObjectName("label_13")
+        self.txt_proxy_way = QtWidgets.QLabel(self.tab_3)
+        self.txt_proxy_way.setGeometry(QtCore.QRect(20, 250, 471, 31))
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.txt_proxy_way.setFont(font)
+        self.txt_proxy_way.setStyleSheet("background: none;\n"
+"color: white\n"
+"")
+        self.txt_proxy_way.setText("")
+        self.txt_proxy_way.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.txt_proxy_way.setObjectName("txt_proxy_way")
+        self.use_http_proxy_radio = QtWidgets.QRadioButton(self.tab_3)
+        self.use_http_proxy_radio.setGeometry(QtCore.QRect(20, 170, 121, 17))
+        self.use_http_proxy_radio.setStyleSheet("background: none;\n"
+"color: white")
+        self.use_http_proxy_radio.setObjectName("use_http_proxy_radio")
+        self.use_socks_proxy_radio = QtWidgets.QRadioButton(self.tab_3)
+        self.use_socks_proxy_radio.setGeometry(QtCore.QRect(310, 170, 141, 17))
+        self.use_socks_proxy_radio.setStyleSheet("background: none;\n"
+"color: white")
+        self.use_socks_proxy_radio.setObjectName("use_socks_proxy_radio")
+        self.use_https_proxy_radio = QtWidgets.QRadioButton(self.tab_3)
+        self.use_https_proxy_radio.setGeometry(QtCore.QRect(150, 170, 141, 17))
+        self.use_https_proxy_radio.setStyleSheet("background: none;\n"
+"color: white")
+        self.use_https_proxy_radio.setObjectName("use_https_proxy_radio")
         self.input_link_change_mobile_proxy = QtWidgets.QLineEdit(self.tab_3)
         self.input_link_change_mobile_proxy.setGeometry(QtCore.QRect(20, 120, 471, 31))
         font = QtGui.QFont()
@@ -487,19 +514,8 @@ class Ui_Dialog(object):
 "color: white;\n"
 "")
         self.use_mobile_proxy_box.setObjectName("use_mobile_proxy_box")
-        self.label_7 = QtWidgets.QLabel(self.tab_3)
-        self.label_7.setGeometry(QtCore.QRect(80, 30, 231, 31))
-        font = QtGui.QFont()
-        font.setFamily("Agency FB")
-        font.setPointSize(16)
-        font.setBold(True)
-        font.setWeight(75)
-        self.label_7.setFont(font)
-        self.label_7.setStyleSheet("background: none;\n"
-"color: white")
-        self.label_7.setObjectName("label_7")
         self.use_txt_proxy_box = QtWidgets.QCheckBox(self.tab_3)
-        self.use_txt_proxy_box.setGeometry(QtCore.QRect(20, 180, 461, 21))
+        self.use_txt_proxy_box.setGeometry(QtCore.QRect(20, 200, 461, 21))
         font = QtGui.QFont()
         font.setPointSize(11)
         self.use_txt_proxy_box.setFont(font)
@@ -511,8 +527,8 @@ class Ui_Dialog(object):
         self.way_to_uses_txt_proxy_btn.setGeometry(QtCore.QRect(20, 280, 471, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
-        font.setUnderline(False)
-        font.setStrikeOut(False)
+        font.setBold(False)
+        font.setWeight(50)
         self.way_to_uses_txt_proxy_btn.setFont(font)
         self.way_to_uses_txt_proxy_btn.setStyleSheet("QPushButton {\n"
 "    background: rgb(224, 131, 61);\n"
@@ -534,17 +550,25 @@ class Ui_Dialog(object):
 "    border-radius: 15px;\n"
 "    color: white\n"
 "}")
-        self.way_to_uses_txt_proxy_btn.setShortcut("")
-        self.way_to_uses_txt_proxy_btn.setCheckable(False)
-        self.way_to_uses_txt_proxy_btn.setAutoRepeat(False)
-        self.way_to_uses_txt_proxy_btn.setAutoExclusive(False)
         self.way_to_uses_txt_proxy_btn.setObjectName("way_to_uses_txt_proxy_btn")
+        self.txt_usue_proxy_way = QtWidgets.QLabel(self.tab_3)
+        self.txt_usue_proxy_way.setGeometry(QtCore.QRect(20, 320, 461, 31))
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setWeight(75)
+        self.txt_usue_proxy_way.setFont(font)
+        self.txt_usue_proxy_way.setStyleSheet("background: none;\n"
+"color: white\n"
+"")
+        self.txt_usue_proxy_way.setText("")
+        self.txt_usue_proxy_way.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.txt_usue_proxy_way.setObjectName("txt_usue_proxy_way")
         self.way_to_txt_proxy_btn = QtWidgets.QPushButton(self.tab_3)
-        self.way_to_txt_proxy_btn.setGeometry(QtCore.QRect(20, 210, 471, 31))
+        self.way_to_txt_proxy_btn.setGeometry(QtCore.QRect(20, 220, 471, 31))
         font = QtGui.QFont()
         font.setPointSize(10)
-        font.setUnderline(False)
-        font.setStrikeOut(False)
+        font.setBold(False)
+        font.setWeight(50)
         self.way_to_txt_proxy_btn.setFont(font)
         self.way_to_txt_proxy_btn.setStyleSheet("QPushButton {\n"
 "    background: rgb(224, 131, 61);\n"
@@ -566,49 +590,26 @@ class Ui_Dialog(object):
 "    border-radius: 15px;\n"
 "    color: white\n"
 "}")
-        self.way_to_txt_proxy_btn.setShortcut("")
-        self.way_to_txt_proxy_btn.setCheckable(False)
-        self.way_to_txt_proxy_btn.setAutoRepeat(False)
-        self.way_to_txt_proxy_btn.setAutoExclusive(False)
         self.way_to_txt_proxy_btn.setObjectName("way_to_txt_proxy_btn")
-        self.proxy_uses_txt_way = QtWidgets.QLabel(self.tab_3)
-        self.proxy_uses_txt_way.setGeometry(QtCore.QRect(20, 310, 471, 31))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.proxy_uses_txt_way.sizePolicy().hasHeightForWidth())
-        self.proxy_uses_txt_way.setSizePolicy(sizePolicy)
+        self.input_mobile_proxy = QtWidgets.QLineEdit(self.tab_3)
+        self.input_mobile_proxy.setGeometry(QtCore.QRect(20, 80, 471, 31))
         font = QtGui.QFont()
-        font.setBold(True)
-        font.setWeight(75)
-        self.proxy_uses_txt_way.setFont(font)
-        self.proxy_uses_txt_way.setStyleSheet("background: none;\n"
-"color: white")
-        self.proxy_uses_txt_way.setText("")
-        self.proxy_uses_txt_way.setObjectName("proxy_uses_txt_way")
-        self.proxy_txt_way = QtWidgets.QLabel(self.tab_3)
-        self.proxy_txt_way.setGeometry(QtCore.QRect(20, 240, 471, 31))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.proxy_txt_way.sizePolicy().hasHeightForWidth())
-        self.proxy_txt_way.setSizePolicy(sizePolicy)
-        font = QtGui.QFont()
-        font.setBold(True)
-        font.setWeight(75)
-        self.proxy_txt_way.setFont(font)
-        self.proxy_txt_way.setStyleSheet("background: none;\n"
-"color: white")
-        self.proxy_txt_way.setText("")
-        self.proxy_txt_way.setObjectName("proxy_txt_way")
-        self.label_13 = QtWidgets.QLabel(self.tab_3)
-        self.label_13.setGeometry(QtCore.QRect(20, 20, 51, 41))
-        self.label_13.setStyleSheet("background: none\n"
-"")
-        self.label_13.setText("")
-        self.label_13.setPixmap(QtGui.QPixmap("icon.png"))
-        self.label_13.setScaledContents(True)
-        self.label_13.setObjectName("label_13")
+        font.setPointSize(10)
+        self.input_mobile_proxy.setFont(font)
+        self.input_mobile_proxy.setStyleSheet("QLineEdit {\n"
+"    background: rgb(224, 131, 61);\n"
+"    border: 2px solid rgb(0, 0, 0);\n"
+"    border-radius: 5px;\n"
+"    font-size: 14;\n"
+"    padding: 5px;\n"
+"    color: rgb(255, 255, 255);\n"
+"    \n"
+"}\n"
+"\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid rgb(219, 123, 53);\n"
+"}")
+        self.input_mobile_proxy.setObjectName("input_mobile_proxy")
         self.tabWidget.addTab(self.tab_3, "")
         self.tab = QtWidgets.QWidget()
         self.tab.setObjectName("tab")
@@ -774,18 +775,18 @@ class Ui_Dialog(object):
         self.label_14.setStyleSheet("background: none\n"
 "")
         self.label_14.setText("")
-        self.label_14.setPixmap(QtGui.QPixmap("icon.png"))
+        self.label_14.setPixmap(QtGui.QPixmap("../../PycharmProjects/SMM multi/icon.png"))
         self.label_14.setScaledContents(True)
         self.label_14.setObjectName("label_14")
         self.tabWidget.addTab(self.tab, "")
 
         self.retranslateUi(Dialog)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(2)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "AutoReg | abuzer_abuzer"))
+        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.start_auto_reg_btn.setText(_translate("Dialog", "Запустить"))
         self.label_10.setText(_translate("Dialog", "@abuzer_abuzer"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_1), _translate("Dialog", "Запуск"))
@@ -805,13 +806,16 @@ class Ui_Dialog(object):
         self.save_settings_btn.setText(_translate("Dialog", "Сохранить настройки"))
         self.input_telegram_api.setPlaceholderText(_translate("Dialog", "API token Telegram"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), _translate("Dialog", "Настройки"))
-        self.input_mobile_proxy.setPlaceholderText(_translate("Dialog", "Мобильные прокси host:port:login:password"))
+        self.label_7.setText(_translate("Dialog", "Настройки прокси"))
+        self.use_http_proxy_radio.setText(_translate("Dialog", "HTTP"))
+        self.use_socks_proxy_radio.setText(_translate("Dialog", "SOCKS5"))
+        self.use_https_proxy_radio.setText(_translate("Dialog", "HTTPS"))
         self.input_link_change_mobile_proxy.setPlaceholderText(_translate("Dialog", "Ссылка для обновления IP мобильных прокси"))
         self.use_mobile_proxy_box.setText(_translate("Dialog", "Использовать мобильные прокси"))
-        self.label_7.setText(_translate("Dialog", "Настройки прокси"))
         self.use_txt_proxy_box.setText(_translate("Dialog", "Использовать прокси из txt"))
-        self.way_to_uses_txt_proxy_btn.setText(_translate("Dialog", "Путь к прокси"))
-        self.way_to_txt_proxy_btn.setText(_translate("Dialog", "Путь к прокси"))
+        self.way_to_uses_txt_proxy_btn.setText(_translate("Dialog", "Путь к txt с юзаными прокси"))
+        self.way_to_txt_proxy_btn.setText(_translate("Dialog", "Путь к txt с прокси"))
+        self.input_mobile_proxy.setPlaceholderText(_translate("Dialog", "Мобильные прокси host:port:login:password"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), _translate("Dialog", "Настройки прокси"))
         self.wat_nvalid_cookies.setText(_translate("Dialog", "Путь к невалидным cookie"))
         self.way_cookies.setText(_translate("Dialog", "Путь к cookie"))
