@@ -25,6 +25,7 @@ def go_to_mm_site(driver):
     driver.get('https://www.google.ru/')
     driver.set_window_size(1920, 1080)
     # >>> Подтверждение cookies в google.com
+
     try:
         tring = "//div[text()='Accept all']"
         trs = WebDriverWait(driver, 2).until(EC.element_to_be_clickable((By.XPATH, tring)))
@@ -42,6 +43,13 @@ def go_to_mm_site(driver):
         tring = "//div[text()='Accept all']"
         trs = WebDriverWait(driver, 2).until(EC.element_to_be_clickable((By.XPATH, tring)))
         trs.click()
+    except:
+        pass
+    
+    try:
+        dont = "//div[text()='Не сейчас']"
+        clasd = WebDriverWait(driver, 2).until(EC.element_to_be_clickable((By.XPATH, dont)))
+        clasd.click()
     except:
         pass
 
