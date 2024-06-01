@@ -198,6 +198,9 @@ def get_chromedriver(use_txt_proxy, use_mobile_proxy):
     prefs = {"profile.default_content_setting_values.notifications": 2}
     options.add_argument(f'user-agent={ua}')
     options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--allow-running-insecure-content")
     options.add_argument("--enable-automation")
     options.add_argument("--disable-infobars")
