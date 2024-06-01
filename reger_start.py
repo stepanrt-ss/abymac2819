@@ -1,4 +1,4 @@
-import os
+аimport os
 import sys
 import time
 
@@ -284,13 +284,13 @@ def start_registrarion(num, user_n, m):
         # >>> Открытие сайта MM через переход по ссылке
         else:
             driver.get('https://megamarket.ru/')
-            time.sleep(15)
+            time.sleep(20)
     except Exception as ex:
         print(ex)
 
     time.sleep(15)
 
-    click_func(driver, xpath_entrance, 10)
+    click_func(driver, xpath_entrance, 120)
 
     # >>> Проверка наличия капчи на сайте
     html_check_valid = driver.page_source
